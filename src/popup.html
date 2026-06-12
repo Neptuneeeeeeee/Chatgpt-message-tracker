@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChatGPT Tracker</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup">
+      <header class="topbar">
+        <h1>ChatGPT 计数器</h1>
+        <button id="open-options" type="button" title="设置">设置</button>
+      </header>
+
+      <section class="controls">
+        <label for="active-mode">当前模式</label>
+        <select id="active-mode"></select>
+        <div class="toggles">
+          <label><input id="auto-track" type="checkbox"> 自动记录</label>
+          <label><input id="auto-detect" type="checkbox"> 自动识别模式</label>
+          <label><input id="show-widget" type="checkbox"> 页面浮窗</label>
+        </div>
+      </section>
+
+      <section id="stats" class="stats"></section>
+
+      <section class="actions">
+        <button id="manual-add" type="button">+1</button>
+        <button id="undo" type="button">撤销一次</button>
+        <button id="open-chatgpt" type="button">打开 ChatGPT</button>
+      </section>
+
+      <details id="more-panel" class="more">
+        <summary>更多功能</summary>
+        <div class="more-body">
+          <section class="more-block">
+            <div class="more-block-head">
+              <span class="more-title">时间范围统计</span>
+              <select id="window-range"></select>
+            </div>
+            <div id="window-stats" class="window-stats"></div>
+          </section>
+
+          <section class="more-block">
+            <span class="more-title">最近记录</span>
+            <div id="recent-list" class="recent-list"></div>
+          </section>
+
+          <button id="export-json" type="button">导出 JSON</button>
+        </div>
+      </details>
+    </main>
+    <script src="shared.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

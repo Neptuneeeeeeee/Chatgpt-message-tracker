@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChatGPT Tracker 设置</title>
+    <link rel="stylesheet" href="options.css">
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <h1>ChatGPT Tracker 设置</h1>
+        <p>所有统计只保存在本机 Chrome 的扩展存储中。</p>
+      </header>
+
+      <section class="panel">
+        <div class="panel-title">
+          <h2>模式</h2>
+          <button id="add-mode" type="button">添加模式</button>
+        </div>
+        <div id="mode-list" class="mode-list"></div>
+        <div class="save-row">
+          <button id="save" type="button">保存设置</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">
+          <h2>数据</h2>
+        </div>
+        <div class="data-actions">
+          <button id="export" type="button">导出 JSON</button>
+          <button id="reset-active" type="button">清空当前模式</button>
+          <button id="reset-all" type="button">清空全部记录</button>
+        </div>
+      </section>
+    </main>
+    <script src="shared.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

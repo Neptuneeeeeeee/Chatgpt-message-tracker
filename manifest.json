@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT Message Tracker",
+  "description": "Track local ChatGPT message usage by mode.",
+  "version": "0.1.0",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*"
+      ],
+      "js": ["src/shared.js", "src/content.js"],
+      "css": ["src/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "ChatGPT Tracker",
+    "default_popup": "src/popup.html"
+  },
+  "options_page": "src/options.html"
+}
