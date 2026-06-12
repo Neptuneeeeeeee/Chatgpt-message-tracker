@@ -86,6 +86,10 @@
     const mode = detected || getActiveMode();
     if (!mode || !mode.enabled) return;
 
+    console.debug(
+      `[ChatGPT Tracker] +1 ${mode.id} (${detected ? "detected" : "fallback"}, ${source})`
+    );
+
     lastTrackedAt = now;
 
     if (mode.id !== settings.activeModeId) {
@@ -196,32 +200,46 @@
       .filter(isVisibleElement);
   }
 
-  // 识别只信输入框区域和菜单勾选项，按可信度分层：
-  // 菜单勾选项 > 胶囊文本恰好等于模式名 > 胶囊文本包含模式词（取最长的模式名，防止 High 抢走 Extra High）。
+  function modelSwitcherCandidates() {
+    return Array.from(
+      document.querySelectorAll('[data-testid*="model-switcher"], [data-testid*="model"], button[aria-label*="model" i]')
+    )
+      .slice(0, 12)
+      .filter(isVisibleElement);
+  }
+
+  // 识别按可信度分层：菜单勾选项 > 输入框区域 > 顶部模型选择器（Pro 这类模型级选择可能只显示在那里）。
+  // 每个区域内：文本恰好等于模式名 > 包含模式词（取最长的模式名，防止 High 抢走 Extra High）。
   function detectCurrentMode() {
     const checkedMode = findCheckedMenuMode();
     if (checkedMode) return checkedMode;
 
-    const candidates = composerCandidates();
+    const groups = [composerCandidates(), modelSwitcherCandidates()];
 
-    for (const element of candidates) {
-      const mode = findModeByExactText(element);
-      if (mode) return mode;
-    }
-
-    let best = null;
-    for (const element of candidates) {
-      const mode = findModeByText(elementText(element));
-      if (mode && (!best || mode.label.length > best.label.length)) {
-        best = mode;
+    for (const candidates of groups) {
+      for (const element of candidates) {
+        const mode = findModeByExactText(element);
+        if (mode) return mode;
       }
+
+      let best = null;
+      for (const element of candidates) {
+        const mode = findModeByText(elementText(element));
+        if (mode && (!best || mode.label.length > best.label.length)) {
+          best = mode;
+        }
+      }
+      if (best) return best;
     }
-    return best;
+
+    return null;
   }
 
   async function syncDetectedMode() {
     if (!extensionAvailable) return null;
     if (!settings || !settings.autoDetectMode) return null;
+    // 后台标签页不许写全局模式：多个 ChatGPT 标签页各自检测会互相覆盖 activeModeId
+    if (document.hidden) return null;
     const detected = detectCurrentMode();
     if (!detected) return null;
     if (detected.id !== settings.activeModeId) {
@@ -366,6 +384,10 @@
       detectTimer = window.setTimeout(() => runAsync(syncDetectedMode), DETECT_DEBOUNCE_MS);
     });
     observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) runAsync(syncDetectedMode);
+    });
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName !== "local") return;
