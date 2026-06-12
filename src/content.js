@@ -11,6 +11,26 @@
   let lastTrackedAt = 0;
   let refreshTimer = 0;
   let detectTimer = 0;
+  let extensionAvailable = true;
+
+  function isExtensionContextError(error) {
+    const message = String((error && error.message) || error || "");
+    return message.includes("Extension context invalidated") || message.includes("context invalidated");
+  }
+
+  function handleAsyncError(error) {
+    if (isExtensionContextError(error)) {
+      extensionAvailable = false;
+      return;
+    }
+    console.warn("[ChatGPT Tracker]", error);
+  }
+
+  function runAsync(task) {
+    Promise.resolve()
+      .then(task)
+      .catch(handleAsyncError);
+  }
 
   function getActiveMode() {
     if (!settings) return null;
@@ -55,13 +75,23 @@
   }
 
   async function trackUsage(source) {
+    if (!extensionAvailable) return;
     if (!settings || !settings.autoTrack) return;
-    const mode = getActiveMode();
-    if (!mode || !mode.enabled) return;
 
     const now = Date.now();
     if (now - lastTrackedAt < TRACK_DEBOUNCE_MS) return;
+
+    // 在发送瞬间（捕获阶段，早于页面处理）读取页面上选中的模式，比后台同步的结果更准
+    const detected = settings.autoDetectMode ? detectCurrentMode() : null;
+    const mode = detected || getActiveMode();
+    if (!mode || !mode.enabled) return;
+
     lastTrackedAt = now;
+
+    if (mode.id !== settings.activeModeId) {
+      settings.activeModeId = mode.id;
+      settings = await Core.saveSettings(settings);
+    }
 
     usage = await Core.addUsage(mode.id, source);
     renderWidget();
@@ -70,11 +100,12 @@
 
   function queueRefresh() {
     window.clearTimeout(refreshTimer);
-    refreshTimer = window.setTimeout(async () => {
+    refreshTimer = window.setTimeout(() => runAsync(async () => {
+      if (!extensionAvailable) return;
       settings = await Core.getSettings();
       usage = await Core.getUsage();
       renderWidget();
-    }, 60);
+    }), 60);
   }
 
   function widgetRoot() {
@@ -112,42 +143,93 @@
     return rect.width > 0 && rect.height > 0 && styles.visibility !== "hidden" && styles.display !== "none";
   }
 
-  function detectVisibleChatGPTMode() {
-    const selectors = [
-      '[data-testid*="model"]',
-      'button[aria-label*="model" i]',
-      'button[aria-label*="模式"]',
-      'button[aria-haspopup="menu"]',
-      'button.__composer-pill',
-      'main button'
-    ];
+  function elementText(element) {
+    return [
+      element.getAttribute("aria-label"),
+      element.getAttribute("data-testid"),
+      element.textContent
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
 
-    for (const selector of selectors) {
-      const elements = Array.from(document.querySelectorAll(selector)).slice(0, 24);
-      for (const element of elements) {
-        if (!isVisibleElement(element)) continue;
-        const text = [
-          element.getAttribute("aria-label"),
-          element.getAttribute("data-testid"),
-          element.textContent
-        ]
-          .filter(Boolean)
-          .join(" ");
-        const mode = findModeByText(text);
-        if (mode) return mode;
-      }
+  function findModeByExactText(element) {
+    const sources = [element.textContent, element.getAttribute("aria-label")];
+
+    for (const raw of sources) {
+      const text = String(raw || "").replace(/\s+/g, " ").trim().toLowerCase();
+      if (!text) continue;
+      const mode = settings.modes
+        .filter((candidate) => candidate.enabled)
+        .find((candidate) => {
+          return text === candidate.label.toLowerCase() || text === candidate.id.toLowerCase();
+        });
+      if (mode) return mode;
     }
 
     return null;
   }
 
+  function getComposerRoot() {
+    const input = document.querySelector('#prompt-textarea, [data-testid="prompt-textarea"]');
+    if (!input) return null;
+    return input.closest("form") || input.parentElement;
+  }
+
+  function findCheckedMenuMode() {
+    const checked = document.querySelectorAll(
+      '[role="menuitemradio"][aria-checked="true"], [aria-selected="true"], [data-state="checked"]'
+    );
+    for (const element of checked) {
+      if (!isVisibleElement(element)) continue;
+      const mode = findModeByText(elementText(element));
+      if (mode) return mode;
+    }
+    return null;
+  }
+
+  function composerCandidates() {
+    const root = getComposerRoot();
+    if (!root) return [];
+    return Array.from(root.querySelectorAll('button, [role="button"], [aria-haspopup="menu"], [data-testid]'))
+      .slice(0, 40)
+      .filter(isVisibleElement);
+  }
+
+  // 识别只信输入框区域和菜单勾选项，按可信度分层：
+  // 菜单勾选项 > 胶囊文本恰好等于模式名 > 胶囊文本包含模式词（取最长的模式名，防止 High 抢走 Extra High）。
+  function detectCurrentMode() {
+    const checkedMode = findCheckedMenuMode();
+    if (checkedMode) return checkedMode;
+
+    const candidates = composerCandidates();
+
+    for (const element of candidates) {
+      const mode = findModeByExactText(element);
+      if (mode) return mode;
+    }
+
+    let best = null;
+    for (const element of candidates) {
+      const mode = findModeByText(elementText(element));
+      if (mode && (!best || mode.label.length > best.label.length)) {
+        best = mode;
+      }
+    }
+    return best;
+  }
+
   async function syncDetectedMode() {
-    if (!settings || !settings.autoDetectMode) return;
-    const detected = detectVisibleChatGPTMode();
-    if (!detected || detected.id === settings.activeModeId) return;
-    settings.activeModeId = detected.id;
-    settings = await Core.saveSettings(settings);
-    renderWidget();
+    if (!extensionAvailable) return null;
+    if (!settings || !settings.autoDetectMode) return null;
+    const detected = detectCurrentMode();
+    if (!detected) return null;
+    if (detected.id !== settings.activeModeId) {
+      settings.activeModeId = detected.id;
+      settings = await Core.saveSettings(settings);
+      renderWidget();
+    }
+    return detected;
   }
 
   function renderWidget() {
@@ -197,11 +279,11 @@
       </div>
     `;
 
-    root.querySelector('[data-cmt-action="toggle"]').addEventListener("click", onToggle);
+    root.querySelector('[data-cmt-action="toggle"]').addEventListener("click", () => runAsync(onToggle));
     const select = root.querySelector("#cmt-mode-select");
-    if (select) select.addEventListener("change", onModeChange);
-    root.querySelector('[data-cmt-action="add"]').addEventListener("click", onManualAdd);
-    root.querySelector('[data-cmt-action="undo"]').addEventListener("click", onUndo);
+    if (select) select.addEventListener("change", (event) => runAsync(() => onModeChange(event)));
+    root.querySelector('[data-cmt-action="add"]').addEventListener("click", () => runAsync(onManualAdd));
+    root.querySelector('[data-cmt-action="undo"]').addEventListener("click", () => runAsync(onUndo));
   }
 
   function escapeHtml(value) {
@@ -214,18 +296,21 @@
   }
 
   async function onToggle() {
+    if (!extensionAvailable) return;
     settings.widgetCollapsed = !settings.widgetCollapsed;
     settings = await Core.saveSettings(settings);
     renderWidget();
   }
 
   async function onModeChange(event) {
+    if (!extensionAvailable) return;
     settings.activeModeId = event.target.value;
     settings = await Core.saveSettings(settings);
     renderWidget();
   }
 
   async function onManualAdd() {
+    if (!extensionAvailable) return;
     const mode = getActiveMode();
     if (!mode) return;
     usage = await Core.addUsage(mode.id, "manual-widget");
@@ -234,6 +319,7 @@
   }
 
   async function onUndo() {
+    if (!extensionAvailable) return;
     const mode = getActiveMode();
     if (!mode) return;
     await Core.removeLastUsage(mode.id);
@@ -255,9 +341,9 @@
     document.addEventListener(
       "click",
       (event) => {
-        window.setTimeout(syncDetectedMode, 200);
+        window.setTimeout(() => runAsync(syncDetectedMode), 200);
         if (isSendButton(event.target)) {
-          trackUsage("send-button");
+          runAsync(() => trackUsage("send-button"));
         }
       },
       true
@@ -270,14 +356,14 @@
         if (event.key !== "Enter" || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
         const composer = getComposer(event.target);
         if (!composerHasText(composer)) return;
-        trackUsage("enter-key");
+        runAsync(() => trackUsage("enter-key"));
       },
       true
     );
 
     const observer = new MutationObserver(() => {
       window.clearTimeout(detectTimer);
-      detectTimer = window.setTimeout(syncDetectedMode, DETECT_DEBOUNCE_MS);
+      detectTimer = window.setTimeout(() => runAsync(syncDetectedMode), DETECT_DEBOUNCE_MS);
     });
     observer.observe(document.body, { childList: true, subtree: true, characterData: true });
 
@@ -293,11 +379,16 @@
     settings = await Core.getSettings();
     usage = await Core.getUsage();
     renderWidget();
-    syncDetectedMode();
     bindEvents();
+
+    // ChatGPT 首屏渲染晚于 document_idle，轮询到第一次识别成功为止，之后交给 MutationObserver
+    for (let attempt = 0; attempt < 15; attempt += 1) {
+      if (await syncDetectedMode()) break;
+      await new Promise((resolve) => window.setTimeout(resolve, 1000));
+    }
   }
 
   init().catch((error) => {
-    console.error("[ChatGPT Tracker] init failed", error);
+    handleAsyncError(error);
   });
 })();
