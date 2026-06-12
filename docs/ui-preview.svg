@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">ChatGPT Message Tracker UI preview</title>
+  <desc id="desc">A preview of the floating counter widget and Chrome extension popup for ChatGPT Message Tracker.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0f172a" flood-opacity="0.18"/>
+    </filter>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="760" fill="#f6f7f9"/>
+
+  <rect x="44" y="40" width="1192" height="680" rx="18" fill="#ffffff" filter="url(#shadow)"/>
+  <rect x="44" y="40" width="1192" height="54" rx="18" fill="#f8fafc"/>
+  <rect x="44" y="78" width="1192" height="16" fill="#f8fafc"/>
+  <circle cx="76" cy="67" r="6" fill="#ef4444"/>
+  <circle cx="98" cy="67" r="6" fill="#f59e0b"/>
+  <circle cx="120" cy="67" r="6" fill="#22c55e"/>
+  <rect x="164" y="54" width="546" height="27" rx="13.5" fill="#ffffff" stroke="#d8dee8"/>
+  <text x="184" y="73" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="13">https://chatgpt.com/</text>
+
+  <rect x="44" y="94" width="210" height="626" fill="#fbfcfe"/>
+  <text x="76" y="140" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">ChatGPT</text>
+  <rect x="70" y="174" width="146" height="34" rx="8" fill="#eef2f7"/>
+  <text x="88" y="196" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13">New chat</text>
+  <rect x="70" y="226" width="118" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="70" y="254" width="142" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="70" y="282" width="126" height="12" rx="6" fill="#e2e8f0"/>
+
+  <text x="462" y="190" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="760">What can I help with?</text>
+
+  <rect x="360" y="525" width="560" height="92" rx="20" fill="#ffffff" stroke="#d8dee8" filter="url(#soft-shadow)"/>
+  <text x="392" y="560" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="14">Ask anything</text>
+  <rect x="392" y="580" width="112" height="28" rx="14" fill="#eef2f7" stroke="#d8dee8"/>
+  <text x="414" y="599" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13">Extra High</text>
+  <circle cx="870" cy="594" r="18" fill="#172033"/>
+  <text x="865" y="600" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">↑</text>
+
+  <g transform="translate(956 438)">
+    <rect width="248" height="178" rx="8" fill="#ffffff" stroke="#d8dee8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="248" height="45" rx="8" fill="#ffffff"/>
+    <line x1="0" y1="45" x2="248" y2="45" stroke="#e5e7eb"/>
+    <text x="12" y="28" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">ChatGPT 计数器</text>
+    <rect x="211" y="10" width="26" height="26" rx="6" fill="#f8fafc" stroke="#d8dee8"/>
+    <text x="220" y="29" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="16">-</text>
+    <text x="12" y="69" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">模式</text>
+    <rect x="12" y="78" width="224" height="34" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <text x="24" y="100" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13">Extra High</text>
+    <text x="12" y="139" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13">Extra High</text>
+    <text x="199" y="142" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="760">12</text>
+    <text x="12" y="160" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="12">累计发送次数</text>
+  </g>
+
+  <g transform="translate(120 148)">
+    <rect width="330" height="472" rx="12" fill="#f6f7f9" stroke="#d8dee8" filter="url(#shadow)"/>
+    <text x="14" y="32" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="760">ChatGPT 计数器</text>
+    <rect x="270" y="12" width="46" height="32" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <text x="281" y="33" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13">设置</text>
+
+    <text x="14" y="72" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">当前模式</text>
+    <rect x="14" y="84" width="302" height="34" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <text x="26" y="106" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13">Extra High</text>
+
+    <rect x="14" y="130" width="142" height="32" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <rect x="26" y="141" width="11" height="11" rx="2" fill="#2563eb"/>
+    <text x="45" y="151" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="12">自动记录</text>
+    <rect x="166" y="130" width="150" height="32" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <rect x="178" y="141" width="11" height="11" rx="2" fill="#2563eb"/>
+    <text x="197" y="151" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="12">自动识别模式</text>
+    <rect x="14" y="172" width="142" height="32" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <rect x="26" y="183" width="11" height="11" rx="2" fill="#2563eb"/>
+    <text x="45" y="193" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="12">页面浮窗</text>
+
+    <g transform="translate(14 220)">
+      <rect width="302" height="48" rx="8" fill="#ffffff" stroke="#d8dee8"/>
+      <text x="12" y="23" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">Instant</text>
+      <text x="272" y="27" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="760">4</text>
+      <text x="12" y="39" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="12">累计发送次数</text>
+    </g>
+    <g transform="translate(14 278)">
+      <rect width="302" height="48" rx="8" fill="#ffffff" stroke="#d8dee8"/>
+      <text x="12" y="23" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">Extra High</text>
+      <text x="263" y="27" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="760">12</text>
+      <text x="12" y="39" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="12">累计发送次数</text>
+    </g>
+    <g transform="translate(14 336)">
+      <rect width="302" height="48" rx="8" fill="#ffffff" stroke="#d8dee8"/>
+      <text x="12" y="23" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">Pro</text>
+      <text x="272" y="27" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="760">2</text>
+      <text x="12" y="39" fill="#59657a" font-family="Inter, Arial, sans-serif" font-size="12">累计发送次数</text>
+    </g>
+
+    <rect x="14" y="400" width="146" height="32" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <text x="78" y="421" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">+1</text>
+    <rect x="170" y="400" width="146" height="32" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <text x="218" y="421" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">撤销一次</text>
+    <rect x="14" y="442" width="302" height="32" rx="6" fill="#ffffff" stroke="#d8dee8"/>
+    <text x="125" y="463" fill="#172033" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">打开 ChatGPT</text>
+  </g>
+</svg>
