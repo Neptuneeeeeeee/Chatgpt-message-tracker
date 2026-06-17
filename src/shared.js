@@ -19,6 +19,7 @@
     showWidget: true,
     widgetCollapsed: false,
     statsWindow: "24h",
+    dailyModeId: "instant",
     modes: [
       {
         id: "instant",
@@ -124,6 +125,9 @@
     merged.widgetCollapsed = merged.widgetCollapsed === true;
     if (!STATS_WINDOWS.some((window) => window.id === merged.statsWindow)) {
       merged.statsWindow = DEFAULT_SETTINGS.statsWindow;
+    }
+    if (!merged.modes.some((mode) => mode.id === merged.dailyModeId && mode.enabled)) {
+      merged.dailyModeId = merged.activeModeId;
     }
     merged.version = 1;
     return merged;
@@ -233,6 +237,74 @@
     });
   }
 
+  function startOfLocalDay(value) {
+    const date = new Date(value);
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+  }
+
+  function addLocalDays(value, days) {
+    const date = new Date(value);
+    date.setDate(date.getDate() + days);
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+  }
+
+  function formatDateKey(value) {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function getDailyWindowStart(windowDef, now) {
+    const today = startOfLocalDay(now);
+    const dayMatch = /^(\d+)d$/.exec(windowDef.id);
+
+    if (dayMatch) {
+      return addLocalDays(today, -(Number(dayMatch[1]) - 1));
+    }
+
+    return startOfLocalDay(now - windowDef.ms);
+  }
+
+  function getDailyModeStats(settings, usage, modeId, windowId, nowValue) {
+    const normalizedSettings = normalizeSettings(settings);
+    const normalizedUsage = normalizeUsage(usage);
+    const selectedMode =
+      normalizedSettings.modes.find((mode) => mode.id === modeId && mode.enabled) ||
+      normalizedSettings.modes.find((mode) => mode.id === normalizedSettings.dailyModeId && mode.enabled) ||
+      normalizedSettings.modes.find((mode) => mode.enabled) ||
+      normalizedSettings.modes[0];
+    const windowDef = STATS_WINDOWS.find((window) => window.id === windowId) || STATS_WINDOWS[0];
+    const now = Number.isFinite(Number(nowValue)) ? Number(nowValue) : Date.now();
+    const firstDay = getDailyWindowStart(windowDef, now);
+    const since = windowDef.id.endsWith("d") ? firstDay : now - windowDef.ms;
+    const counts = new Map();
+
+    normalizedUsage.entries.forEach((entry) => {
+      if (entry.modeId !== selectedMode.id || entry.ts < since || entry.ts > now) {
+        return;
+      }
+
+      const day = startOfLocalDay(entry.ts);
+      counts.set(day, (counts.get(day) || 0) + 1);
+    });
+
+    const rows = [];
+    for (let day = startOfLocalDay(now); day >= firstDay; day = addLocalDays(day, -1)) {
+      rows.push({
+        date: formatDateKey(day),
+        count: counts.get(day) || 0
+      });
+    }
+
+    return {
+      modeId: selectedMode.id,
+      modeLabel: selectedMode.label,
+      rows
+    };
+  }
+
   async function resetMode(modeId) {
     const usage = await getUsage();
     usage.entries = usage.entries.filter((entry) => {
@@ -267,6 +339,7 @@
     removeUsageEntry,
     resetMode,
     getModeStats,
+    getDailyModeStats,
     formatDateTime,
     slugify
   };

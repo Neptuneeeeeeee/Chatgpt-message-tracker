@@ -198,14 +198,16 @@ select {
   gap: 4px;
 }
 
-.win-row {
+.win-row,
+.daily-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
 }
 
-.win-row span {
+.win-row span,
+.daily-row span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -216,6 +218,14 @@ select {
   margin-top: 2px;
   padding-top: 6px;
   border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.daily-stats {
+  display: grid;
+  gap: 4px;
+  max-height: 154px;
+  overflow: auto;
+  padding-right: 2px;
 }
 
 .recent-list {

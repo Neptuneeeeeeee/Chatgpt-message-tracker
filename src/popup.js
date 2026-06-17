@@ -17,6 +17,8 @@
     openChatgpt: document.getElementById("open-chatgpt"),
     windowRange: document.getElementById("window-range"),
     windowStats: document.getElementById("window-stats"),
+    dailyMode: document.getElementById("daily-mode"),
+    dailyStats: document.getElementById("daily-stats"),
     recentList: document.getElementById("recent-list"),
     exportJson: document.getElementById("export-json")
   };
@@ -100,6 +102,29 @@
       `;
   }
 
+  function renderDailyStats() {
+    els.dailyMode.innerHTML = settings.modes
+      .filter((mode) => mode.enabled)
+      .map((mode) => {
+        const selected = mode.id === settings.dailyModeId ? "selected" : "";
+        return `<option value="${escapeHtml(mode.id)}" ${selected}>${escapeHtml(mode.label)}</option>`;
+      })
+      .join("");
+
+    const dailyStats = Core.getDailyModeStats(settings, usage, settings.dailyModeId, settings.statsWindow);
+
+    els.dailyStats.innerHTML = dailyStats.rows
+      .map((row) => {
+        return `
+          <div class="daily-row">
+            <span>${escapeHtml(row.date)}</span>
+            <b>${row.count}</b>
+          </div>
+        `;
+      })
+      .join("");
+  }
+
   function renderRecent() {
     const modeLabels = new Map(settings.modes.map((mode) => [mode.id, mode.label]));
     const entries = usage.entries
@@ -141,6 +166,7 @@
     els.showWidget.checked = settings.showWidget;
     renderStats();
     renderWindowStats();
+    renderDailyStats();
     renderRecent();
   }
 
@@ -199,6 +225,10 @@
 
     els.windowRange.addEventListener("change", async (event) => {
       await saveSettingPatch({ statsWindow: event.target.value });
+    });
+
+    els.dailyMode.addEventListener("change", async (event) => {
+      await saveSettingPatch({ dailyModeId: event.target.value });
     });
 
     els.exportJson.addEventListener("click", exportData);
