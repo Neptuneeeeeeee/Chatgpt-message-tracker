@@ -20,7 +20,9 @@
     dailyMode: document.getElementById("daily-mode"),
     dailyStats: document.getElementById("daily-stats"),
     recentList: document.getElementById("recent-list"),
-    exportJson: document.getElementById("export-json")
+    exportJson: document.getElementById("export-json"),
+    resetCounts: document.getElementById("reset-counts"),
+    countSince: document.getElementById("count-since")
   };
 
   const SOURCE_LABELS = {
@@ -55,7 +57,7 @@
   }
 
   function renderStats() {
-    const stats = Core.getModeStats(settings, usage);
+    const stats = Core.getModeStats(settings, usage, settings.resetAt);
     els.stats.innerHTML = stats
       .filter((stat) => stat.enabled)
       .map((stat) => {
@@ -65,11 +67,17 @@
               <strong>${escapeHtml(stat.label)}</strong>
               <b>${stat.count}</b>
             </div>
-            <div class="meta">累计发送次数</div>
+            <div class="meta">本轮发送次数</div>
           </article>
         `;
       })
       .join("");
+  }
+
+  function renderResetCaption() {
+    els.countSince.textContent = settings.resetAt
+      ? `自 ${Core.formatDateTime(settings.resetAt)} 起计数`
+      : "从最早记录起计数";
   }
 
   function renderWindowStats() {
@@ -165,6 +173,7 @@
     els.autoDetect.checked = settings.autoDetectMode;
     els.showWidget.checked = settings.showWidget;
     renderStats();
+    renderResetCaption();
     renderWindowStats();
     renderDailyStats();
     renderRecent();
@@ -187,8 +196,13 @@
   }
 
   async function onUndo() {
-    await Core.removeLastUsage(settings.activeModeId);
+    await Core.removeLastUsage(settings.activeModeId, settings.resetAt);
     await refresh();
+  }
+
+  async function onResetCounts() {
+    if (!window.confirm("将所有模式的计数清零，从现在重新计数？\n历史记录会完整保留在「更多功能」里。")) return;
+    await saveSettingPatch({ resetAt: Date.now() });
   }
 
   async function exportData() {
@@ -232,6 +246,7 @@
     });
 
     els.exportJson.addEventListener("click", exportData);
+    els.resetCounts.addEventListener("click", onResetCounts);
     els.manualAdd.addEventListener("click", onManualAdd);
     els.undo.addEventListener("click", onUndo);
     els.openOptions.addEventListener("click", () => chrome.runtime.openOptionsPage());

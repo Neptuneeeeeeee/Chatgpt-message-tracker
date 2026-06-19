@@ -98,12 +98,12 @@
   async function resetActiveMode() {
     const active = settings.modes.find((mode) => mode.id === settings.activeModeId) || settings.modes[0];
     if (!active) return;
-    if (!window.confirm(`清空 ${active.label} 的累计统计？`)) return;
+    if (!window.confirm(`永久删除 ${active.label} 的全部历史记录？此操作不可撤销，「更多功能」里也会一并消失。\n\n若只想归零计数，请用弹窗里的「清零计数」。`)) return;
     usage = await Core.resetMode(active.id);
   }
 
   async function resetAll() {
-    if (!window.confirm("清空全部统计记录？")) return;
+    if (!window.confirm("永久删除所有模式的全部历史记录？此操作不可撤销。\n\n若只想归零计数，请用弹窗里的「清零计数」。")) return;
     usage = await Core.saveUsage({ entries: [] });
   }
 

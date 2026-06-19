@@ -20,6 +20,7 @@
     widgetCollapsed: false,
     statsWindow: "24h",
     dailyModeId: "instant",
+    resetAt: 0,
     modes: [
       {
         id: "instant",
@@ -129,6 +130,8 @@
     if (!merged.modes.some((mode) => mode.id === merged.dailyModeId && mode.enabled)) {
       merged.dailyModeId = merged.activeModeId;
     }
+    const resetAt = Number(merged.resetAt);
+    merged.resetAt = Number.isFinite(resetAt) && resetAt > 0 ? resetAt : 0;
     merged.version = 1;
     return merged;
   }
@@ -198,13 +201,13 @@
     return true;
   }
 
-  async function removeLastUsage(modeId) {
+  async function removeLastUsage(modeId, since) {
     const usage = await getUsage();
     let latestIndex = -1;
     let latestTs = -1;
 
     usage.entries.forEach((entry, index) => {
-      if (entry.modeId === modeId && entry.ts > latestTs) {
+      if (entry.modeId === modeId && entry.ts > latestTs && (!since || entry.ts >= since)) {
         latestIndex = index;
         latestTs = entry.ts;
       }

@@ -264,7 +264,7 @@
       document.documentElement.appendChild(root);
     }
 
-    const stats = Core.getModeStats(settings, usage);
+    const stats = Core.getModeStats(settings, usage, settings.resetAt);
     const activeStat = stats.find((stat) => stat.id === settings.activeModeId) || stats[0];
 
     root.innerHTML = `
@@ -289,7 +289,7 @@
           <span>${escapeHtml(activeStat.label)}</span>
           <b>${escapeHtml(statText(activeStat))}</b>
         </div>
-        <div class="cmt-sub">累计发送次数</div>
+        <div class="cmt-sub">本轮发送次数</div>
         <div class="cmt-actions">
           <button type="button" data-cmt-action="add">+1</button>
           <button type="button" data-cmt-action="undo">撤销</button>
@@ -340,7 +340,7 @@
     if (!extensionAvailable) return;
     const mode = getActiveMode();
     if (!mode) return;
-    await Core.removeLastUsage(mode.id);
+    await Core.removeLastUsage(mode.id, settings.resetAt);
     usage = await Core.getUsage();
     renderWidget();
   }

@@ -141,6 +141,19 @@ select {
   grid-column: 1 / -1;
 }
 
+.reset-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+#reset-counts {
+  flex: none;
+  min-height: 28px;
+  padding: 0 12px;
+}
+
 .more {
   border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: 8px;
