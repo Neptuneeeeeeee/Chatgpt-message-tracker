@@ -54,8 +54,20 @@
     return JSON.parse(JSON.stringify(value));
   }
 
+  function extensionContextValid() {
+    try {
+      return Boolean(chrome.runtime && chrome.runtime.id);
+    } catch (error) {
+      return false;
+    }
+  }
+
   function storageGet(keys) {
     return new Promise((resolve, reject) => {
+      if (!extensionContextValid()) {
+        reject(new Error("Extension context invalidated"));
+        return;
+      }
       chrome.storage.local.get(keys, (result) => {
         const error = chrome.runtime.lastError;
         if (error) {
@@ -69,6 +81,10 @@
 
   function storageSet(value) {
     return new Promise((resolve, reject) => {
+      if (!extensionContextValid()) {
+        reject(new Error("Extension context invalidated"));
+        return;
+      }
       chrome.storage.local.set(value, () => {
         const error = chrome.runtime.lastError;
         if (error) {

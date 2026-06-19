@@ -11,16 +11,45 @@
   let lastTrackedAt = 0;
   let refreshTimer = 0;
   let detectTimer = 0;
+  let observer = null;
   let extensionAvailable = true;
+
+  // 扩展被重新加载后，旧标签页里的脚本变成孤儿：chrome.runtime.id 会变为 undefined，
+  // 再访问 chrome.storage 就抛 "reading 'local'"。用它主动判断，比匹配错误字符串可靠。
+  function extensionContextValid() {
+    try {
+      return Boolean(chrome.runtime && chrome.runtime.id);
+    } catch (error) {
+      return false;
+    }
+  }
 
   function isExtensionContextError(error) {
     const message = String((error && error.message) || error || "");
-    return message.includes("Extension context invalidated") || message.includes("context invalidated");
+    return (
+      message.includes("Extension context invalidated") ||
+      message.includes("context invalidated") ||
+      !extensionContextValid()
+    );
+  }
+
+  function teardown() {
+    if (!extensionAvailable) return;
+    extensionAvailable = false;
+    try {
+      if (observer) observer.disconnect();
+    } catch (error) {
+      // observer 可能已失效，忽略
+    }
+    window.clearTimeout(refreshTimer);
+    window.clearTimeout(detectTimer);
+    const root = widgetRoot();
+    if (root) root.remove();
   }
 
   function handleAsyncError(error) {
     if (isExtensionContextError(error)) {
-      extensionAvailable = false;
+      teardown();
       return;
     }
     console.warn("[ChatGPT Tracker]", error);
@@ -379,7 +408,7 @@
       true
     );
 
-    const observer = new MutationObserver(() => {
+    observer = new MutationObserver(() => {
       window.clearTimeout(detectTimer);
       detectTimer = window.setTimeout(() => runAsync(syncDetectedMode), DETECT_DEBOUNCE_MS);
     });
@@ -405,6 +434,7 @@
 
     // ChatGPT 首屏渲染晚于 document_idle，轮询到第一次识别成功为止，之后交给 MutationObserver
     for (let attempt = 0; attempt < 15; attempt += 1) {
+      if (!extensionAvailable) break;
       if (await syncDetectedMode()) break;
       await new Promise((resolve) => window.setTimeout(resolve, 1000));
     }
