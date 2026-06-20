@@ -1,6 +1,11 @@
 (function () {
   "use strict";
 
+  // 防重复注入：清单注入与后台 re-inject 偶尔会同时落到同一隔离环境，重复会造成双重计数。
+  // 该标记存在隔离环境的 window 上，扩展重载时随旧上下文清空，不影响重载后的复活。
+  if (window.__cmtTrackerInjected) return;
+  window.__cmtTrackerInjected = true;
+
   const Core = window.ChatGPTTrackerCore;
   const WIDGET_ID = "cmt-widget";
   const TRACK_DEBOUNCE_MS = 1000;
