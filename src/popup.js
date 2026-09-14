@@ -28,6 +28,7 @@
   const SOURCE_LABELS = {
     "send-button": "自动 · 发送按钮",
     "enter-key": "自动 · 回车",
+    "dom-observed": "自动 · 页面确认",
     "manual-widget": "手动 · 浮窗",
     "manual-popup": "手动 · 弹窗",
     manual: "手动"

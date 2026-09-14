@@ -32,7 +32,7 @@ ChatGPT Pro 对提问次数有明显限制，尤其是 `Pro` 等高强度模式�
 ### 使用方式
 
 1. 在页面浮窗或扩展弹窗里选择当前模式。
-2. 发送消息时，扩展会先读取输入框旁选中的模式，给识别到的模式记录 `+1`；识别不到时记给手动选中的模式。
+2. 发送消息时，扩展会先读取输入框旁选中的模式，等页面上真的多出一条你的消息后再记 `+1`；识别不到模式时记给手动选中的模式。输入法选字的回车、生成中按的回车不会被误记。
 3. 如果自动识别不准，可以在弹窗里关闭「自动识别模式」，改为手动选择。
 4. 如果漏记或多记，可以用 `+1`、撤销或删除最近记录来修正。
 5. 在设置页可以重命名模式、添加自定义模式、导出数据或清空记录。
@@ -89,7 +89,7 @@ It is a local Chrome extension for personal tracking only. It is not designed to
 ### Usage
 
 1. Choose the current mode in the floating widget or extension popup.
-2. When you send a message, the extension reads the mode selected next to the composer and records `+1` for it, falling back to the manually selected mode if detection fails.
+2. When you send a message, the extension reads the mode selected next to the composer, then records `+1` once your message actually appears in the conversation, falling back to the manually selected mode if detection fails. Enter presses that do not send (IME candidate confirmation, pressing Enter while a reply is streaming) are not counted.
 3. If automatic detection is inaccurate, turn off **Auto detect mode** in the popup and select the mode manually.
 4. Use `+1`, undo, or recent-entry deletion to correct records.
 5. Use the options page to rename modes, add custom modes, export data, or clear records.
