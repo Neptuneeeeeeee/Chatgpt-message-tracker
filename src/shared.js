@@ -11,6 +11,9 @@
     { id: "30d", label: "最近 30 天", ms: 30 * 24 * 60 * 60 * 1000 }
   ];
 
+  // 「按天统计」里代表“全部模式合计”的特殊选项。下划线保证它不会和任何真实模式 id 冲突（slugify 会去掉下划线）。
+  const DAILY_TOTAL_ID = "__total__";
+
   const DEFAULT_SETTINGS = {
     version: 1,
     activeModeId: "instant",
@@ -143,7 +146,10 @@
     if (!STATS_WINDOWS.some((window) => window.id === merged.statsWindow)) {
       merged.statsWindow = DEFAULT_SETTINGS.statsWindow;
     }
-    if (!merged.modes.some((mode) => mode.id === merged.dailyModeId && mode.enabled)) {
+    if (
+      merged.dailyModeId !== DAILY_TOTAL_ID &&
+      !merged.modes.some((mode) => mode.id === merged.dailyModeId && mode.enabled)
+    ) {
       merged.dailyModeId = merged.activeModeId;
     }
     const resetAt = Number(merged.resetAt);
@@ -289,11 +295,13 @@
   function getDailyModeStats(settings, usage, modeId, windowId, nowValue) {
     const normalizedSettings = normalizeSettings(settings);
     const normalizedUsage = normalizeUsage(usage);
-    const selectedMode =
-      normalizedSettings.modes.find((mode) => mode.id === modeId && mode.enabled) ||
-      normalizedSettings.modes.find((mode) => mode.id === normalizedSettings.dailyModeId && mode.enabled) ||
-      normalizedSettings.modes.find((mode) => mode.enabled) ||
-      normalizedSettings.modes[0];
+    const isTotal = modeId === DAILY_TOTAL_ID;
+    const selectedMode = isTotal
+      ? null
+      : normalizedSettings.modes.find((mode) => mode.id === modeId && mode.enabled) ||
+        normalizedSettings.modes.find((mode) => mode.id === normalizedSettings.dailyModeId && mode.enabled) ||
+        normalizedSettings.modes.find((mode) => mode.enabled) ||
+        normalizedSettings.modes[0];
     const windowDef = STATS_WINDOWS.find((window) => window.id === windowId) || STATS_WINDOWS[0];
     const now = Number.isFinite(Number(nowValue)) ? Number(nowValue) : Date.now();
     const firstDay = getDailyWindowStart(windowDef, now);
@@ -301,7 +309,10 @@
     const counts = new Map();
 
     normalizedUsage.entries.forEach((entry) => {
-      if (entry.modeId !== selectedMode.id || entry.ts < since || entry.ts > now) {
+      if (entry.ts < since || entry.ts > now) {
+        return;
+      }
+      if (!isTotal && entry.modeId !== selectedMode.id) {
         return;
       }
 
@@ -318,8 +329,8 @@
     }
 
     return {
-      modeId: selectedMode.id,
-      modeLabel: selectedMode.label,
+      modeId: isTotal ? DAILY_TOTAL_ID : selectedMode.id,
+      modeLabel: isTotal ? "全部模式" : selectedMode.label,
       rows
     };
   }
@@ -347,6 +358,7 @@
     USAGE_KEY,
     DEFAULT_SETTINGS,
     STATS_WINDOWS,
+    DAILY_TOTAL_ID,
     normalizeSettings,
     normalizeUsage,
     getSettings,

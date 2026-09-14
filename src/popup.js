@@ -111,13 +111,16 @@
   }
 
   function renderDailyStats() {
-    els.dailyMode.innerHTML = settings.modes
+    const totalSelected = settings.dailyModeId === Core.DAILY_TOTAL_ID ? "selected" : "";
+    const modeOptions = settings.modes
       .filter((mode) => mode.enabled)
       .map((mode) => {
         const selected = mode.id === settings.dailyModeId ? "selected" : "";
         return `<option value="${escapeHtml(mode.id)}" ${selected}>${escapeHtml(mode.label)}</option>`;
       })
       .join("");
+    els.dailyMode.innerHTML =
+      `<option value="${Core.DAILY_TOTAL_ID}" ${totalSelected}>合计（全部模式）</option>` + modeOptions;
 
     const dailyStats = Core.getDailyModeStats(settings, usage, settings.dailyModeId, settings.statsWindow);
 
