@@ -20,7 +20,7 @@ FILES = [
     'manifest.json',
     'icons/icon-16.png', 'icons/icon-32.png', 'icons/icon-48.png', 'icons/icon-128.png',
     'src/background.js', 'src/shared.js', 'src/site-locales.js', 'src/site-detection.js',
-    'src/content.js', 'src/content.css', 'src/popup.html', 'src/popup.js', 'src/popup.css',
+    'src/ui-locales.js', 'src/i18n.js', 'src/content.js', 'src/content.css', 'src/popup.html', 'src/popup.js', 'src/popup.css',
     'src/options.html', 'src/options.js', 'src/options.css',
 ]
 ASSETS = ['icon-128.png', 'promo-440x280.jpg', 'screenshot-01-1280x800.jpg', 'screenshot-02-1280x800.jpg']
@@ -123,6 +123,9 @@ def main():
         materials = {upload.name: upload.read_bytes(), 'package-audit.json': audit_bytes, 'PRIVACY.md': safe_bytes('PRIVACY.md')}
         for name in ['PUBLISHING.md', 'listing-zh-CN.md', 'listing-en.md']:
             materials[name] = safe_bytes('store/' + name)
+        manual = 'docs/USER_TEST_' + version + '.md'
+        if (ROOT / manual).is_file():
+            materials['MANUAL_TEST.md'] = safe_bytes(manual)
         for name in ASSETS:
             materials['assets/' + name] = safe_bytes('store/assets/' + name)
         kit = output / (stem + '-publish-kit.zip')

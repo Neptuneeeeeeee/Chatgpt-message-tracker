@@ -18,7 +18,7 @@ function reinjectAll() {
         .insertCSS({ target: { tabId: tab.id }, files: ["src/content.css"] })
         .catch(() => {});
       chrome.scripting
-        .executeScript({ target: { tabId: tab.id }, files: ["src/shared.js", "src/site-locales.js", "src/site-detection.js", "src/content.js"] })
+        .executeScript({ target: { tabId: tab.id }, files: ["src/shared.js", "src/site-locales.js", "src/ui-locales.js", "src/i18n.js", "src/site-detection.js", "src/content.js"] })
         .catch(() => {});
     }
   });

@@ -1,0 +1,166 @@
+{
+  "version": "0.4.0",
+  "pass": true,
+  "unitTests": {
+    "tests": 275,
+    "pass": 275,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "staticChecks": {
+    "version": "0.4.0",
+    "syntaxChecked": 23,
+    "localeVariants": 21,
+    "languageSupportBytes": 22487,
+    "injectionPathsMatch": true,
+    "permissionsUnchanged": true,
+    "storageKeysAndModeIDsPreserved": true
+  },
+  "languageCombinations": 441,
+  "chromeScenarios": 136,
+  "chromeLanguagePairs": 21,
+  "browser": "Chrome/153.0.8010.48",
+  "browserExit": {
+    "code": 0,
+    "signal": null
+  },
+  "runtimeErrors": [],
+  "browserNativeDiagnosticCategories": {
+    "ui/display/mac/cv_display_link_mac.mm:195": 28,
+    "chrome/browser/ui/webui/ntp/new_tab_ui.cc:54": 2,
+    "google_apis/gcm/engine/registration_request.cc:291": 2,
+    "third_party/crashpad/crashpad/util/file/file_io_posix.cc:145": 6
+  },
+  "testProfileRemoved": true,
+  "liveChatGPTAccountVerified": false,
+  "upload": {
+    "version": "0.4.0",
+    "uploadFile": "chatgpt-message-tracker-0.4.0-chrome-web-store.zip",
+    "sha256": "cf16f848b15c5dc24ee322140eca8f40535b65c096ef0637e75cc30f4b2468ab",
+    "bytes": 170677,
+    "fileCount": 19,
+    "manifestAtRoot": true,
+    "zipRoundTripVerified": true,
+    "runtimeOnlyAllowlist": true,
+    "permissions": [
+      "storage",
+      "scripting"
+    ],
+    "hostPermissions": [
+      "https://chatgpt.com/*",
+      "https://chat.openai.com/*"
+    ],
+    "files": {
+      "icons/icon-128.png": {
+        "bytes": 9837,
+        "sha256": "50cb4f187524445fc574b16448ff4a3b172a343ac95fb8740aca8d8c7c8ae5eb"
+      },
+      "icons/icon-16.png": {
+        "bytes": 738,
+        "sha256": "97a3830d56ab217a5a5cb647a0d348bae13e212399cbcdd3028f8c5c4bc6ce71"
+      },
+      "icons/icon-32.png": {
+        "bytes": 1794,
+        "sha256": "7aaa333afc170fdea7d2f5378320fcb044b4347a9e4f1e3fd4e93f7af8099fb8"
+      },
+      "icons/icon-48.png": {
+        "bytes": 3074,
+        "sha256": "0e09755ed9796a8eaa187f8a59c4a1f5d2c73645a9218b766742ea41e7e2699a"
+      },
+      "manifest.json": {
+        "bytes": 1276,
+        "sha256": "4ab5bc8631d6202b3c296cfa480aa06764509363b911ab1896c92ff96ad9f160"
+      },
+      "src/background.js": {
+        "bytes": 1412,
+        "sha256": "96a6aac6abfb66bad220ef8083b5e10fed8d8a2ab57e9033978d26c62e59dec9"
+      },
+      "src/content.css": {
+        "bytes": 3260,
+        "sha256": "876df64197cdd7e2b385a9aaf52d8418fbbad656fb8a30dbd7d3dc682d1f2ce2"
+      },
+      "src/content.js": {
+        "bytes": 23131,
+        "sha256": "301187f483ab51724469d3d6015b063597fd45a938404fc686f0acecbfe69163"
+      },
+      "src/i18n.js": {
+        "bytes": 4722,
+        "sha256": "1731fa6ba9d95844ade7b2ea61f52dfa68554c8c98bdc559f7ccc3a74aa65ead"
+      },
+      "src/options.css": {
+        "bytes": 2427,
+        "sha256": "78f7b8caee3eb086173395e465f9f7350c7d5c079bcefdf6381fe8a1d891b46e"
+      },
+      "src/options.html": {
+        "bytes": 3220,
+        "sha256": "9d35fe4d47c8fde241ceecb98675ca5d6c37a9990b33057da3a96ba95e0fed80"
+      },
+      "src/options.js": {
+        "bytes": 5030,
+        "sha256": "b502160e9f3e3647bac74527676feeeb54b2ec68bf06bd4feb1e0fe6be0abca6"
+      },
+      "src/popup.css": {
+        "bytes": 4263,
+        "sha256": "082fbbbe96ea1f95a700d9ec4a9f4bdfc3c7351d1d74bc47548ba1a2468423f3"
+      },
+      "src/popup.html": {
+        "bytes": 2769,
+        "sha256": "33b42cb6d7147f3afbbc6904f2f11ed9c13a6d67e02159a55b22780e22e83c41"
+      },
+      "src/popup.js": {
+        "bytes": 5864,
+        "sha256": "dc941eee23136d022ba1075448f361984469462f5e50330307799a720fe62dfa"
+      },
+      "src/shared.js": {
+        "bytes": 11442,
+        "sha256": "88842bad4c8f4d42ed823fe7e8fede4fa515fd1eb59aab2f022dabc792d34216"
+      },
+      "src/site-detection.js": {
+        "bytes": 9775,
+        "sha256": "93bf3fa62c41462606421349434ccef537b46eae0fda34dadd816553003f8075"
+      },
+      "src/site-locales.js": {
+        "bytes": 12712,
+        "sha256": "64a060182cefaac3a19af8cea2c777a109f0514e559d5a8813c5302b655e9072"
+      },
+      "src/ui-locales.js": {
+        "bytes": 61879,
+        "sha256": "4044f36bd6812d7a9a0466e321276e1723a5519c2761127ccec279ceea87ea2e"
+      }
+    }
+  },
+  "publishKit": {
+    "file": "chatgpt-message-tracker-0.4.0-publish-kit.zip",
+    "bytes": 416867,
+    "sha256": "90a29cf9808ee18af90158a1f4847965e364552cc6e1421aa1590be83fa5b968"
+  },
+  "defaults": {
+    "uiLanguage": "en-US",
+    "modeLabelLanguage": "en-US"
+  },
+  "sourceSHA256": {
+    "manifest.json": "4ab5bc8631d6202b3c296cfa480aa06764509363b911ab1896c92ff96ad9f160",
+    "src/background.js": "96a6aac6abfb66bad220ef8083b5e10fed8d8a2ab57e9033978d26c62e59dec9",
+    "src/content.css": "876df64197cdd7e2b385a9aaf52d8418fbbad656fb8a30dbd7d3dc682d1f2ce2",
+    "src/content.js": "301187f483ab51724469d3d6015b063597fd45a938404fc686f0acecbfe69163",
+    "src/i18n.js": "1731fa6ba9d95844ade7b2ea61f52dfa68554c8c98bdc559f7ccc3a74aa65ead",
+    "src/options.css": "78f7b8caee3eb086173395e465f9f7350c7d5c079bcefdf6381fe8a1d891b46e",
+    "src/options.html": "9d35fe4d47c8fde241ceecb98675ca5d6c37a9990b33057da3a96ba95e0fed80",
+    "src/options.js": "b502160e9f3e3647bac74527676feeeb54b2ec68bf06bd4feb1e0fe6be0abca6",
+    "src/popup.css": "082fbbbe96ea1f95a700d9ec4a9f4bdfc3c7351d1d74bc47548ba1a2468423f3",
+    "src/popup.html": "33b42cb6d7147f3afbbc6904f2f11ed9c13a6d67e02159a55b22780e22e83c41",
+    "src/popup.js": "dc941eee23136d022ba1075448f361984469462f5e50330307799a720fe62dfa",
+    "src/shared.js": "88842bad4c8f4d42ed823fe7e8fede4fa515fd1eb59aab2f022dabc792d34216",
+    "src/site-detection.js": "93bf3fa62c41462606421349434ccef537b46eae0fda34dadd816553003f8075",
+    "src/site-locales.js": "64a060182cefaac3a19af8cea2c777a109f0514e559d5a8813c5302b655e9072",
+    "src/ui-locales.js": "4044f36bd6812d7a9a0466e321276e1723a5519c2761127ccec279ceea87ea2e"
+  },
+  "notes": [
+    "Actual MV3 package loaded in isolated Chrome on a locally fulfilled test page.",
+    "UI language and mode label language are independent from actual site detection.",
+    "Interface translations are not all independently reviewed by native speakers.",
+    "No personal account language changes, store submission, or Git push performed by this release workflow."
+  ]
+}

@@ -26,6 +26,16 @@ input {
   gap: 12px;
 }
 
+.topbar h1 { min-width: 0; }
+.topbar button { flex-shrink: 0; max-width: 48%; }
+.toggles label { min-width: 0; padding-block: 4px; overflow-wrap: anywhere; }
+.toggles input { flex-shrink: 0; }
+.reset-row, .more-block-head { flex-wrap: wrap; }
+.more-block-head select { max-width: 100%; }
+.recent-info .meta { overflow-wrap: anywhere; }
+#popup-error { margin: 0; overflow-wrap: anywhere; }
+html[dir="rtl"] { text-align: start; }
+
 h1 {
   margin: 0;
   font-size: 16px;

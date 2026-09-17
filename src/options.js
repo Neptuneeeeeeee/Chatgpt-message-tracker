@@ -1,125 +1,103 @@
 (function () {
   "use strict";
-
   const Core = window.ChatGPTTrackerCore;
+  const I = window.ChatGPTTrackerI18n;
+  const $ = id => document.getElementById(id);
+  const h = I.escapeHtml;
   let settings = null;
-  let usage = null;
-
-  const els = {
-    list: document.getElementById("mode-list"),
-    addMode: document.getElementById("add-mode"),
-    save: document.getElementById("save"),
-    export: document.getElementById("export"),
-    resetActive: document.getElementById("reset-active"),
-    resetAll: document.getElementById("reset-all")
-  };
-
-  function escapeHtml(value) {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+  let dirtyModes = false;
+  let statusTimer = 0;
+  let queue = Promise.resolve();
+  const t = (key, params) => I.t(key, settings, params);
+  function notify(error) {
+    clearTimeout(statusTimer);
+    $("settings-status").textContent = error ? t("error", {error:error.message || String(error)}) : t("saved");
+    if (!error) statusTimer = setTimeout(() => { $("settings-status").textContent = ""; }, 2400);
   }
-
+  function run(task) {
+    queue = queue.then(task).catch(error => notify(error));
+    return queue;
+  }
+  function readModes() {
+    return Array.from($("mode-list").children).map((row, index) => {
+      const input = row.querySelector('[data-field="label"]');
+      const old = settings.modes.find(mode => mode.id === row.dataset.modeId);
+      const text = input.value.trim();
+      const original = I.ENGLISH_MODES[row.dataset.modeId];
+      const label = text === input.dataset.renderedLabel ? old.label : text || original || t("modeNumber", {number:index+1});
+      return {id:row.dataset.modeId, label, enabled:row.querySelector('[data-field="enabled"]').checked};
+    });
+  }
   function render() {
-    els.list.innerHTML = settings.modes
-      .map((mode) => {
-        return `
-          <div class="mode-row" data-mode-id="${escapeHtml(mode.id)}">
-            <div class="field">
-              <label>名称</label>
-              <input data-field="label" value="${escapeHtml(mode.label)}" maxlength="40">
-            </div>
-            <label class="enabled-field">
-              <input data-field="enabled" type="checkbox" ${mode.enabled ? "checked" : ""}>
-              启用
-            </label>
-            <button type="button" data-action="remove">删除</button>
-          </div>
-        `;
-      })
-      .join("");
-
-    els.list.querySelectorAll('[data-action="remove"]').forEach((button) => {
-      button.addEventListener("click", (event) => {
-        const row = event.target.closest(".mode-row");
-        row.remove();
+    I.apply(document, settings);
+    document.title = `ChatGPT Tracker · ${t("settings")}`;
+    I.languageOptions($("ui-language"), settings.uiLanguage);
+    I.languageOptions($("mode-label-language"), settings.modeLabelLanguage);
+    $("mode-list").innerHTML = settings.modes.map((mode, index) => {
+      const label = I.modeLabel(mode, settings);
+      return `<div class="mode-row" data-mode-id="${h(mode.id)}">
+        <div class="field"><label for="mode-name-${index}">${h(t("name"))}</label>
+        <input id="mode-name-${index}" data-field="label" dir="auto" value="${h(label)}" data-rendered-label="${h(label)}" maxlength="80"></div>
+        <label class="enabled-field"><input data-field="enabled" type="checkbox" ${mode.enabled ? "checked" : ""}>${h(t("enabled"))}</label>
+        <button type="button" data-action="remove">${h(t("delete"))}</button></div>`;
+    }).join("");
+  }
+  async function setLanguage(key, value) {
+    const draft = dirtyModes ? readModes() : null;
+    settings = await Core.patchSettings({[key]:value});
+    if (draft) settings.modes = draft;
+    render();
+    notify();
+  }
+  async function saveModes() {
+    const modes = readModes();
+    settings = await Core.patchSettings({modes});
+    dirtyModes = false;
+    render();
+    notify();
+  }
+  function addMode() {
+    settings.modes = readModes();
+    settings.modes.push({id:`custom-${Date.now()}`, label:t("customMode"), enabled:true});
+    dirtyModes = true;
+    render();
+  }
+  async function deleteHistory(all) {
+    const current = await Core.getSettings();
+    const active = current.modes.find(mode => mode.id === current.activeModeId);
+    if (!all && !active) return;
+    const message = all ? t("confirmDeleteAll") : t("confirmDeleteMode", {mode:I.modeLabel(active, settings)});
+    if (!window.confirm(message)) return;
+    if (all) await Core.saveUsage({entries:[]}); else await Core.resetMode(active.id);
+    notify();
+  }
+  async function init() {
+    settings = await Core.getSettings();
+    render();
+    $("ui-language").addEventListener("change", event => { const value=event.target.value;run(() => setLanguage("uiLanguage",value)); });
+    $("mode-label-language").addEventListener("change", event => { const value=event.target.value;run(() => setLanguage("modeLabelLanguage",value)); });
+    $("mode-list").addEventListener("input", () => { dirtyModes=true; });
+    $("mode-list").addEventListener("change", () => { dirtyModes=true; });
+    $("mode-list").addEventListener("click", event => {
+      const button = event.target.closest('[data-action="remove"]');
+      if (button) { button.closest(".mode-row").remove(); dirtyModes=true; }
+    });
+    $("save").addEventListener("click", () => run(saveModes));
+    $("add-mode").addEventListener("click", () => run(addMode));
+    $("export").addEventListener("click", () => run(() => I.exportData(Core)));
+    $("reset-active").addEventListener("click", () => run(() => deleteHistory(false)));
+    $("reset-all").addEventListener("click", () => run(() => deleteHistory(true)));
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area !== "local" || !changes[Core.SETTINGS_KEY]) return;
+      run(async () => {
+        const draft = dirtyModes ? readModes() : null;
+        const next = await Core.getSettings();
+        const changed = settings.uiLanguage !== next.uiLanguage || settings.modeLabelLanguage !== next.modeLabelLanguage || (!dirtyModes && JSON.stringify(settings.modes) !== JSON.stringify(next.modes));
+        settings = next;
+        if (draft) settings.modes = draft;
+        if (changed) { $("settings-status").textContent=""; render(); }
       });
     });
   }
-
-  function readRows() {
-    const rows = Array.from(els.list.querySelectorAll(".mode-row"));
-    const modes = rows.map((row, index) => {
-      const label = row.querySelector('[data-field="label"]').value.trim() || `Mode ${index + 1}`;
-      return {
-        id: row.dataset.modeId || Core.slugify(label, `mode-${index + 1}`),
-        label,
-        enabled: row.querySelector('[data-field="enabled"]').checked
-      };
-    });
-
-    return Core.normalizeSettings(Object.assign({}, settings, { modes }));
-  }
-
-  async function save() {
-    const next = readRows();
-    settings = await Core.saveSettings(next);
-    render();
-  }
-
-  function addMode() {
-    settings = readRows();
-    settings.modes.push({
-      id: `custom-${Date.now()}`,
-      label: "自定义模式",
-      enabled: true
-    });
-    render();
-  }
-
-  async function exportData() {
-    const payload = {
-      exportedAt: new Date().toISOString(),
-      settings: await Core.getSettings(),
-      usage: await Core.getUsage()
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `chatgpt-tracker-${new Date().toISOString().slice(0, 10)}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
-  async function resetActiveMode() {
-    const active = settings.modes.find((mode) => mode.id === settings.activeModeId) || settings.modes[0];
-    if (!active) return;
-    if (!window.confirm(`永久删除 ${active.label} 的全部历史记录？此操作不可撤销，「更多功能」里也会一并消失。\n\n若只想归零计数，请用弹窗里的「清零计数」。`)) return;
-    usage = await Core.resetMode(active.id);
-  }
-
-  async function resetAll() {
-    if (!window.confirm("永久删除所有模式的全部历史记录？此操作不可撤销。\n\n若只想归零计数，请用弹窗里的「清零计数」。")) return;
-    usage = await Core.saveUsage({ entries: [] });
-  }
-
-  async function init() {
-    settings = await Core.getSettings();
-    usage = await Core.getUsage();
-    render();
-
-    els.addMode.addEventListener("click", addMode);
-    els.save.addEventListener("click", save);
-    els.export.addEventListener("click", exportData);
-    els.resetActive.addEventListener("click", resetActiveMode);
-    els.resetAll.addEventListener("click", resetAll);
-  }
-
-  init().catch((error) => {
-    document.body.textContent = `Tracker failed to load: ${error.message}`;
-  });
+  init().catch(error => notify(error));
 })();

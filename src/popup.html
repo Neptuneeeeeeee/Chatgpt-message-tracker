@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en-US" dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,63 +8,42 @@
   </head>
   <body>
     <main class="popup">
-      <header class="topbar">
-        <h1>ChatGPT 计数器</h1>
-        <button id="open-options" type="button" title="设置">设置</button>
-      </header>
-
+      <header class="topbar"><h1>ChatGPT Tracker</h1><button id="open-options" type="button" data-i18n="settings" data-i18n-title="settings">Settings</button></header>
       <section class="controls">
-        <label for="active-mode">当前模式</label>
-        <select id="active-mode"></select>
+        <label for="active-mode" data-i18n="currentMode">Current mode</label><select id="active-mode"></select>
         <div class="toggles">
-          <label><input id="auto-track" type="checkbox"> 自动记录</label>
-          <label><input id="auto-detect" type="checkbox"> 自动识别模式</label>
-          <label><input id="show-widget" type="checkbox"> 页面浮窗</label>
+          <label><input id="auto-track" type="checkbox"><span data-i18n="autoTrack">Auto track</span></label>
+          <label><input id="auto-detect" type="checkbox"><span data-i18n="autoDetect">Auto-detect mode</span></label>
+          <label><input id="show-widget" type="checkbox"><span data-i18n="showWidget">Floating counter</span></label>
         </div>
       </section>
-
       <section id="stats" class="stats"></section>
-
-      <div class="reset-row">
-        <span class="meta" id="count-since"></span>
-        <button id="reset-counts" type="button">清零计数</button>
-      </div>
-
+      <div class="reset-row"><span class="meta" id="count-since"></span><button id="reset-counts" type="button" data-i18n="resetCounts">Reset counts</button></div>
       <section class="actions">
-        <button id="manual-add" type="button">+1</button>
-        <button id="undo" type="button">撤销一次</button>
-        <button id="open-chatgpt" type="button">打开 ChatGPT</button>
+        <button id="manual-add" type="button">+1</button><button id="undo" type="button" data-i18n="undo">Undo</button>
+        <button id="open-chatgpt" type="button" data-i18n="openChatgpt">Open ChatGPT</button>
       </section>
-
       <details id="more-panel" class="more">
-        <summary>更多功能</summary>
+        <summary data-i18n="more">More features</summary>
         <div class="more-body">
           <section class="more-block">
-            <div class="more-block-head">
-              <span class="more-title">时间范围统计</span>
-              <select id="window-range"></select>
-            </div>
+            <div class="more-block-head"><label class="more-title" for="window-range" data-i18n="timeStats">Time-range statistics</label><select id="window-range"></select></div>
             <div id="window-stats" class="window-stats"></div>
           </section>
-
           <section class="more-block">
-            <div class="more-block-head">
-              <span class="more-title">按天模式统计</span>
-              <select id="daily-mode"></select>
-            </div>
+            <div class="more-block-head"><label class="more-title" for="daily-mode" data-i18n="dailyStats">Daily statistics</label><select id="daily-mode"></select></div>
             <div id="daily-stats" class="daily-stats"></div>
           </section>
-
-          <section class="more-block">
-            <span class="more-title">最近记录</span>
-            <div id="recent-list" class="recent-list"></div>
-          </section>
-
-          <button id="export-json" type="button">导出 JSON</button>
+          <section class="more-block"><span class="more-title" data-i18n="recent">Recent records</span><div id="recent-list" class="recent-list"></div></section>
+          <button id="export-json" type="button" data-i18n="export">Export JSON</button>
         </div>
       </details>
+      <p id="popup-error" role="status" hidden></p>
     </main>
     <script src="shared.js"></script>
+    <script src="site-locales.js"></script>
+    <script src="ui-locales.js"></script>
+    <script src="i18n.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>

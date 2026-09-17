@@ -1,13 +1,13 @@
-# Chrome Web Store 发布清单（0.3.0）
+# Chrome Web Store 发布清单（0.4.0）
 
 准备上传不代表已提交、通过审核或已经上线。此目录的文案和隐私声明基于当前代码；开发者应在商店后台逐项确认后提交，不要把任何占位说明粘贴为真实身份或测试凭据。
 
 ## 交付文件
 
-运行 `python3 tools/build_release.py` 生成 `dist/0.3.0/`：
+运行 `python3 tools/build_release.py` 生成 `dist/0.4.0/`：
 
-- `chatgpt-message-tracker-0.3.0-chrome-web-store.zip`：唯一应该上传到商店 Package 页的扩展包。manifest.json 位于 ZIP 根目录，没有 Git、测试、node_modules、研究语言包、CLI 或本地记录。
-- `chatgpt-message-tracker-0.3.0-publish-kit.zip`：给发布者保存的材料包，含上传 ZIP、截图、宣传图、隐私政策、文案及本清单。不要把整个材料包上传为扩展。
+- `chatgpt-message-tracker-0.4.0-chrome-web-store.zip`：唯一应该上传到商店 Package 页的扩展包。manifest.json 位于 ZIP 根目录，没有 Git、测试、node_modules、研究语言包、CLI 或本地记录。
+- `chatgpt-message-tracker-0.4.0-publish-kit.zip`：给发布者保存的材料包，含上传 ZIP、截图、宣传图、隐私政策、文案及本清单。不要把整个材料包上传为扩展。
 - `SHA256SUMS.txt` 和 `package-audit.json`：校验值及文件清单。
 - `unpacked/`：与上传 ZIP 内容一致的解压目录，可用来本地试装。
 
@@ -19,7 +19,7 @@
 
 Google 要求 ZIP 根目录包含 manifest；简短说明最多 132 字符。截图使用 1280×800 或 640×400，至少一张；另准备 128×128 PNG 图标及 440×280 小宣传图。首次公开发布前，仍应在自己的已登录 ChatGPT 网页中实际切换中文和英文各发送一次，确认账户当前控件标签能被识别。
 
-本扩展自身 UI 主要为简体中文；不要把 21 个网页识别词表变体写成“插件界面支持 21 种语言”。不要宣传剩余额度、官方限额预测、跨设备同步或完整账户实测。
+0.4.0 首次默认全英文。在 Settings → Languages 中分别设置界面语言和 ChatGPT 模式选项显示语言，两项均有 21 个语言／地区变体且自动保存。界面译文与用于识别 ChatGPT 网页的官方词表是独立模块；显示设置不会改变网站／账户语言，不会强制网页识别语言。自定义名称、模式 ID 和历史记录保持不变。不要宣传官方剩余额度、限额预测、跨设备同步或所有账户均已实测。正式上传前按 `docs/USER_TEST_0.4.0.md` 手测，并将最新隐私政策、源码与文案同步到公开仓库；仅本地修改不会自动更新政策 URL。
 
 ## 隐私政策 URL 与支持 URL
 
@@ -71,7 +71,7 @@ Data is handled locally solely to provide message counting, mode attribution, hi
 
 The extension has no separate account or backend. Install it in desktop Chrome, open the toolbar popup, and test manual +1/undo and the options page without logging in anywhere. To test automatic counting, use the reviewer's own permitted access to ChatGPT, open a new conversation, choose an available supported mode, and send one short test message. The extension should increment once after the new user message appears. Reopening existing history should not increment the count. The reviewer must not use the publisher's personal account; no personal account credentials are included.
 
-Interface controls are currently in Simplified Chinese. 自动记录 = automatic counting; 自动识别模式 = automatic mode detection; 页面浮窗 = floating counter; 设置 = settings; 撤销一次 = undo; 更多功能 = more features; 清零计数 = reset displayed counts (does not delete history). Mode labels are editable. Pro or other restricted modes require the reviewer's own account eligibility. Unknown account-specific labels use manual fallback; no quota-bypass functionality exists.
+The extension opens in English by default. Under Settings → Languages, independently select Interface language and ChatGPT mode-label language; both offer 21 language/region choices and save automatically. Test English interface with Chinese mode labels, then Chinese interface with English labels. Existing counts and custom names must remain unchanged. These settings do not change the ChatGPT account language or the detector's actual page-language source. Reset counts starts a new displayed round without deleting history. Pro or other restricted modes require the reviewer's own account eligibility. Unknown account-specific labels use manual fallback; no quota-bypass functionality exists.
 
 ## 数据迁移和公开发布前注意
 

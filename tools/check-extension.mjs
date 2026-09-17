@@ -10,7 +10,7 @@ const pkg=JSON.parse(read('package.json'));
 assert.equal(manifest.version,pkg.version);
 assert.deepEqual(manifest.permissions,['storage','scripting']);
 assert.deepEqual(manifest.host_permissions,['https://chatgpt.com/*','https://chat.openai.com/*']);
-const expected=['src/shared.js','src/site-locales.js','src/site-detection.js','src/content.js'];
+const expected=['src/shared.js','src/site-locales.js','src/ui-locales.js','src/i18n.js','src/site-detection.js','src/content.js'];
 assert.deepEqual(manifest.content_scripts[0].js,expected);
 const injected=read('src/background.js').match(/executeScript\(\{[^\n]*files: (\[[^\]]+\])/);
 assert.ok(injected,'Background reinjection list exists');assert.deepEqual(JSON.parse(injected[1]),expected);

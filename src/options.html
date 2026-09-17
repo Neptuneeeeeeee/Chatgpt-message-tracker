@@ -1,43 +1,47 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en-US" dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ChatGPT Tracker 设置</title>
+    <title>ChatGPT Tracker · Settings</title>
     <link rel="stylesheet" href="options.css">
   </head>
   <body>
     <main class="page">
       <header>
-        <h1>ChatGPT Tracker 设置</h1>
-        <p>所有统计只保存在本机 Chrome 的扩展存储中。</p>
-        <p>为确认发送，扩展会在当前页面内存中临时比对草稿与新消息；不上传或保存对话正文。<a href="https://github.com/Neptuneeeeeeee/Chatgpt-message-tracker/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">隐私政策 / Privacy policy</a></p>
+        <h1>ChatGPT Tracker · <span data-i18n="settings">Settings</span></h1>
+        <p data-i18n="localOnly">Settings and count records stay in this browser's local extension storage.</p>
+        <p><span data-i18n="privacyNote">To confirm sends, the extension temporarily compares drafts and new messages in page memory. Conversation text is not uploaded or saved to extension storage.</span> <a href="https://github.com/Neptuneeeeeeee/Chatgpt-message-tracker/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer" data-i18n="privacy">Privacy policy</a></p>
       </header>
-
-      <section class="panel">
-        <div class="panel-title">
-          <h2>模式</h2>
-          <button id="add-mode" type="button">添加模式</button>
+      <section class="panel" aria-labelledby="languages-heading">
+        <div class="panel-title"><h2 id="languages-heading" data-i18n="languages">Languages</h2></div>
+        <div class="language-grid">
+          <div class="field"><label for="ui-language" data-i18n="uiLanguage">Interface language</label><select id="ui-language" aria-describedby="language-help"></select></div>
+          <div class="field"><label for="mode-label-language" data-i18n="modeLanguage">ChatGPT mode-label language</label><select id="mode-label-language" aria-describedby="mode-language-help language-help"></select></div>
         </div>
-        <div id="mode-list" class="mode-list"></div>
-        <div class="save-row">
-          <button id="save" type="button">保存设置</button>
-        </div>
+        <p id="mode-language-help" class="data-hint" data-i18n="modeLanguageHelp">Changes mode names displayed in this extension only. Detection follows the actual ChatGPT page language; your ChatGPT account language is not changed.</p>
+        <p id="language-help" class="data-hint" data-i18n="languageHelp">Language changes save automatically. Custom mode names are kept.</p>
       </section>
-
+      <p id="settings-status" class="status" role="status" aria-live="polite"></p>
       <section class="panel">
-        <div class="panel-title">
-          <h2>数据</h2>
-        </div>
-        <p class="data-hint">想归零计数、重新开始：用弹窗里的「清零计数」，历史会保留。下面这两个是<strong>永久删除历史</strong>，删了「更多功能」里也看不到了。</p>
+        <div class="panel-title"><h2 data-i18n="modes">Modes</h2><button id="add-mode" type="button" data-i18n="addMode">Add mode</button></div>
+        <div id="mode-list" class="mode-list"></div>
+        <div class="save-row"><button id="save" type="button" data-i18n="save">Save settings</button></div>
+      </section>
+      <section class="panel">
+        <div class="panel-title"><h2 data-i18n="data">Data</h2></div>
+        <p class="data-hint" data-i18n="dataHint">Reset counts in the popup to start a new round without deleting history. The buttons below permanently delete history.</p>
         <div class="data-actions">
-          <button id="export" type="button">导出 JSON</button>
-          <button id="reset-active" type="button">删除当前模式历史</button>
-          <button id="reset-all" type="button">删除全部历史</button>
+          <button id="export" type="button" data-i18n="export">Export JSON</button>
+          <button id="reset-active" type="button" data-i18n="deleteModeHistory">Delete current mode history</button>
+          <button id="reset-all" type="button" data-i18n="deleteAllHistory">Delete all history</button>
         </div>
       </section>
     </main>
     <script src="shared.js"></script>
+    <script src="site-locales.js"></script>
+    <script src="ui-locales.js"></script>
+    <script src="i18n.js"></script>
     <script src="options.js"></script>
   </body>
 </html>

@@ -40,7 +40,7 @@ test('language changes keep the same ID and all existing history',async t=>{
 });
 test('unknown labels use visible manual fallback, not a guessed mode',async t=>{
  const p=makePage({label:'未经证实的新标签',settings:{showWidget:true,activeModeId:'medium'}});t.after(p.close);await p.start();
- assert.match(p.document.querySelector('#cmt-mode-select').title,/未识别网页模式/);assert.match(p.document.querySelector('.cmt-sub').textContent,/手动模式/);
+ assert.match(p.document.querySelector('#cmt-mode-select').title,/Page mode not recognized/);assert.match(p.document.querySelector('.cmt-sub').textContent,/Manual mode/);
  p.draft('手动计数测试');p.key();p.input.textContent='';p.message('手动计数测试');await settle();assert.equal(p.values['cmt.usage'].entries[0].modeId,'medium');
 });
 test('manual-only mode remains authoritative even when the page says high',async t=>{

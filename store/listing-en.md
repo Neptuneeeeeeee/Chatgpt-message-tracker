@@ -16,7 +16,7 @@ ChatGPT Message Tracker provides a floating counter and a toolbar popup, separat
 
 Mode detection uses the language declared by the ChatGPT page and labels taken from original ChatGPT frontend resources. The bundled vocabulary covers 21 language/region variants: English; Simplified Chinese, Traditional Chinese for Taiwan and Hong Kong; Spanish for Spain and Latin America; Portuguese for Brazil and Portugal; French for France and Canada; German, Japanese, Korean, Arabic, Hindi, Russian, Indonesian, Italian, Turkish, Vietnamese and Thai.
 
-Important: this describes recognition of ChatGPT's page labels. The extension's own controls and settings are currently in Simplified Chinese, with editable mode names. This is not a fully translated extension interface.
+English by default, with two independent language preferences under Settings → Languages: Interface language controls the popup, floating counter, settings, prompts and date/number formatting; ChatGPT mode-label language controls the mode names displayed within the extension. Both offer the 21 language/region choices above. Changes save automatically, custom names and existing history are preserved, and Arabic interfaces use right-to-left layout. These preferences do not change your ChatGPT account language or force the detector to use a different page language.
 
 Privacy: settings and count metadata stay in the current browser profile. To confirm sends, the extension temporarily compares the composer draft with newly rendered user-message text in page memory and reads relevant mode controls, conversation paths and send events. It does not persist conversation bodies or upload them to the developer or an AI service. There are no ads, telemetry, cloud sync, or API keys to configure.
 

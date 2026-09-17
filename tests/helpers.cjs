@@ -3,7 +3,7 @@ const path = require('node:path');
 const {JSDOM, VirtualConsole} = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const source = file => fs.readFileSync(path.join(root, file), 'utf8');
-const scripts = ['src/shared.js','src/site-locales.js','src/site-detection.js'];
+const scripts = ['src/shared.js','src/site-locales.js','src/ui-locales.js','src/i18n.js','src/site-detection.js'];
 const code = Object.fromEntries([...scripts, 'src/content.js'].map(file => [file, source(file)]));
 const clone = value => JSON.parse(JSON.stringify(value));
 const settle = async (ms=20) => { await new Promise(resolve => setTimeout(resolve, ms)); };

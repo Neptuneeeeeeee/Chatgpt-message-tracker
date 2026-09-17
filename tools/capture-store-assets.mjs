@@ -24,7 +24,7 @@ export async function captureStoreAssets({directory, extensionId, cdp, evaluate,
     style.textContent='html{background:#edf3f1}body{width:1280px;min-height:800px;box-sizing:border-box;display:grid;grid-template-columns:560px 330px;justify-content:center;align-items:center;gap:100px;background:#edf3f1}.popup{grid-column:2;grid-row:1;width:330px;box-sizing:border-box;border:1px solid #d5dedb;border-radius:18px;background:#f6f7f9;box-shadow:0 22px 60px #163d2422}.store-copy{grid-column:1;grid-row:1;color:#172c27;font-family:system-ui,-apple-system,sans-serif}.store-copy h2{font-size:56px;line-height:1.18;letter-spacing:-2px;margin:26px 0}.store-copy p{font-size:21px;line-height:1.7;color:#4b635b}.store-copy .tag{font-size:14px;letter-spacing:1px;color:#517369}.store-copy .note{font-size:13px;color:#697f76;margin-top:26px}.store-copy img{width:74px;height:74px}';
     document.head.append(style);
     const copy=document.createElement('section');copy.className='store-copy';
-    copy.innerHTML='<img src="../icons/icon-128.png" alt="Tracker icon"><p class="tag">CHATGPT MESSAGE TRACKER</p><h2>每次发送，<br>清楚有数。</h2><p>按模式记录发送次数。<br>本地保存，随时查看与修正。</p><p class="note">实际扩展界面 · 演示记录<br>独立工具，非 OpenAI 官方用量统计。</p>';
+    copy.innerHTML='<img src="../icons/icon-128.png" alt="Tracker icon"><p class="tag">CHATGPT MESSAGE TRACKER</p><h2>Every message.<br>Clearly counted.</h2><p>Track sends by mode.<br>Your interface. Your language.</p><p class="note">Actual extension interface · Sample records<br>Independent tool. Not an official OpenAI usage meter.</p>';
     document.body.append(copy);document.querySelector('#more-panel').open=false;
   })()`);
   await new Promise(r=>setTimeout(r,300));await shot(popup,'screenshot-01-1280x800.jpg');

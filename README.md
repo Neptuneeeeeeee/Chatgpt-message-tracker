@@ -36,7 +36,7 @@ Things that are correctly **not** counted: confirming an IME candidate with Ente
 - Counts sent messages by mode: `Instant`, `Medium`, `High`, `Extra High`, `Pro`, plus your own custom modes.
 - Floating counter widget directly on the ChatGPT page.
 - Automatic mode detection at the moment of sending, based on the ChatGPT page's own language and labels — no guessing from your browser language.
-- Extension interface available in 21 languages, following your browser language.
+- Two independent language settings, each offering 21 language/region choices: **Interface language** and **ChatGPT mode-label language**. Both default to **English**, not the browser language; change them in **Settings → Languages**. Language changes save automatically and preserve custom names and history.
 - Time-range statistics (last 3 hours / 24 hours / 7 days / 30 days) and per-day statistics for each mode.
 - Manual corrections: `+1`, undo, and deleting recent records.
 - Export settings and usage records as JSON.

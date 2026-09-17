@@ -18,6 +18,11 @@
   box-sizing: border-box;
 }
 
+#cmt-widget { text-align: start; max-width: calc(100vw - 32px); }
+#cmt-widget .cmt-icon { flex-shrink: 0; }
+#cmt-widget .cmt-head strong { min-width: 0; }
+#cmt-widget .cmt-actions button { overflow-wrap: anywhere; }
+
 #cmt-widget .cmt-head {
   display: flex;
   align-items: center;

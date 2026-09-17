@@ -18,9 +18,14 @@ select {
   padding: 32px 0;
 }
 
-header {
-  margin-bottom: 20px;
-}
+.language-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: end; }
+.language-grid select { min-height: 40px; }
+.status { min-height: 20px; margin-top: 8px; font-size: 12px; }
+.field, .mode-row { min-width: 0; }
+header p { line-height: 1.55; }
+button { overflow-wrap: anywhere; max-width: 100%; }
+html[dir="rtl"] { text-align: start; }
+header { margin-bottom: 20px; }
 
 h1,
 h2,
@@ -142,6 +147,7 @@ select {
 }
 
 @media (max-width: 760px) {
+  .language-grid { grid-template-columns: 1fr; gap: 14px; }
   .mode-row {
     grid-template-columns: 1fr;
   }

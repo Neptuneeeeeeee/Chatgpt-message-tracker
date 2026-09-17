@@ -1,270 +1,90 @@
 (function () {
   "use strict";
-
   const Core = window.ChatGPTTrackerCore;
+  const I = window.ChatGPTTrackerI18n;
+  const $ = id => document.getElementById(id);
+  const h = I.escapeHtml;
   let settings = null;
   let usage = null;
+  let refreshVersion = 0;
+  let queue = Promise.resolve();
+  const t = (key, params) => I.t(key, settings, params);
+  const n = value => I.number(value, settings);
+  const label = mode => I.modeLabel(mode, settings);
+  const sourceKeys = {"send-button":"sourceSend","enter-key":"sourceEnter","dom-observed":"sourceDOM","manual-widget":"sourceWidget","manual-popup":"sourcePopup",manual:"sourceManual"};
 
-  const els = {
-    activeMode: document.getElementById("active-mode"),
-    autoTrack: document.getElementById("auto-track"),
-    autoDetect: document.getElementById("auto-detect"),
-    showWidget: document.getElementById("show-widget"),
-    stats: document.getElementById("stats"),
-    manualAdd: document.getElementById("manual-add"),
-    undo: document.getElementById("undo"),
-    openOptions: document.getElementById("open-options"),
-    openChatgpt: document.getElementById("open-chatgpt"),
-    windowRange: document.getElementById("window-range"),
-    windowStats: document.getElementById("window-stats"),
-    dailyMode: document.getElementById("daily-mode"),
-    dailyStats: document.getElementById("daily-stats"),
-    recentList: document.getElementById("recent-list"),
-    exportJson: document.getElementById("export-json"),
-    resetCounts: document.getElementById("reset-counts"),
-    countSince: document.getElementById("count-since")
-  };
-
-  const SOURCE_LABELS = {
-    "send-button": "自动 · 发送按钮",
-    "enter-key": "自动 · 回车",
-    "dom-observed": "自动 · 页面确认",
-    "manual-widget": "手动 · 浮窗",
-    "manual-popup": "手动 · 弹窗",
-    manual: "手动"
-  };
-
-  function sourceLabel(source) {
-    return SOURCE_LABELS[source] || "其他";
+  function fail(error) {
+    $("popup-error").hidden = false;
+    $("popup-error").textContent = t("error", {error:error.message || String(error)});
   }
-
-  function escapeHtml(value) {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+  function run(task) {
+    queue = queue.then(task).catch(fail);
+    return queue;
   }
-
-  function renderModes() {
-    els.activeMode.innerHTML = settings.modes
-      .filter((mode) => mode.enabled)
-      .map((mode) => {
-        const selected = mode.id === settings.activeModeId ? "selected" : "";
-        return `<option value="${escapeHtml(mode.id)}" ${selected}>${escapeHtml(mode.label)}</option>`;
-      })
-      .join("");
+  function options(selected) {
+    return settings.modes.filter(mode => mode.enabled).map(mode => I.option(mode, selected, settings)).join("");
   }
-
-  function renderStats() {
-    const stats = Core.getModeStats(settings, usage, settings.resetAt);
-    els.stats.innerHTML = stats
-      .filter((stat) => stat.enabled)
-      .map((stat) => {
-        return `
-          <article class="stat-card">
-            <div class="stat-line">
-              <strong>${escapeHtml(stat.label)}</strong>
-              <b>${stat.count}</b>
-            </div>
-            <div class="meta">本轮发送次数</div>
-          </article>
-        `;
-      })
-      .join("");
-  }
-
-  function renderResetCaption() {
-    els.countSince.textContent = settings.resetAt
-      ? `自 ${Core.formatDateTime(settings.resetAt)} 起计数`
-      : "从最早记录起计数";
-  }
-
-  function renderWindowStats() {
-    els.windowRange.innerHTML = Core.STATS_WINDOWS.map((window) => {
-      const selected = window.id === settings.statsWindow ? "selected" : "";
-      return `<option value="${escapeHtml(window.id)}" ${selected}>${escapeHtml(window.label)}</option>`;
-    }).join("");
-
-    const windowDef =
-      Core.STATS_WINDOWS.find((window) => window.id === settings.statsWindow) || Core.STATS_WINDOWS[0];
-    const stats = Core.getModeStats(settings, usage, Date.now() - windowDef.ms).filter((stat) => stat.enabled);
-    const total = stats.reduce((sum, stat) => sum + stat.count, 0);
-
-    els.windowStats.innerHTML =
-      stats
-        .map((stat) => {
-          return `
-            <div class="win-row">
-              <span>${escapeHtml(stat.label)}</span>
-              <b>${stat.count}</b>
-            </div>
-          `;
-        })
-        .join("") +
-      `
-        <div class="win-row win-total">
-          <span>合计</span>
-          <b>${total}</b>
-        </div>
-      `;
-  }
-
-  function renderDailyStats() {
-    const totalSelected = settings.dailyModeId === Core.DAILY_TOTAL_ID ? "selected" : "";
-    const modeOptions = settings.modes
-      .filter((mode) => mode.enabled)
-      .map((mode) => {
-        const selected = mode.id === settings.dailyModeId ? "selected" : "";
-        return `<option value="${escapeHtml(mode.id)}" ${selected}>${escapeHtml(mode.label)}</option>`;
-      })
-      .join("");
-    els.dailyMode.innerHTML =
-      `<option value="${Core.DAILY_TOTAL_ID}" ${totalSelected}>合计（全部模式）</option>` + modeOptions;
-
-    const dailyStats = Core.getDailyModeStats(settings, usage, settings.dailyModeId, settings.statsWindow);
-
-    els.dailyStats.innerHTML = dailyStats.rows
-      .map((row) => {
-        return `
-          <div class="daily-row">
-            <span>${escapeHtml(row.date)}</span>
-            <b>${row.count}</b>
-          </div>
-        `;
-      })
-      .join("");
-  }
-
-  function renderRecent() {
-    const modeLabels = new Map(settings.modes.map((mode) => [mode.id, mode.label]));
-    const entries = usage.entries
-      .slice()
-      .sort((a, b) => b.ts - a.ts)
-      .slice(0, 8);
-
-    if (!entries.length) {
-      els.recentList.innerHTML = '<div class="meta">暂无记录</div>';
-      return;
-    }
-
-    els.recentList.innerHTML = entries
-      .map((entry) => {
-        return `
-          <div class="recent-row">
-            <div class="recent-info">
-              <strong>${escapeHtml(modeLabels.get(entry.modeId) || entry.modeId)}</strong>
-              <span class="meta">${escapeHtml(Core.formatDateTime(entry.ts))} · ${escapeHtml(sourceLabel(entry.source))}</span>
-            </div>
-            <button type="button" class="recent-remove" data-entry-id="${escapeHtml(entry.id)}" title="删除这条记录">✕</button>
-          </div>
-        `;
-      })
-      .join("");
-
-    els.recentList.querySelectorAll(".recent-remove").forEach((button) => {
-      button.addEventListener("click", async (event) => {
-        await Core.removeUsageEntry(event.currentTarget.dataset.entryId);
-        await refresh();
-      });
-    });
-  }
-
   function render() {
-    renderModes();
-    els.autoTrack.checked = settings.autoTrack;
-    els.autoDetect.checked = settings.autoDetectMode;
-    els.showWidget.checked = settings.showWidget;
-    renderStats();
-    renderResetCaption();
-    renderWindowStats();
-    renderDailyStats();
-    renderRecent();
-  }
+    I.apply(document, settings);
+    $("active-mode").innerHTML = options(settings.activeModeId);
+    $("active-mode").dir = I.direction(settings.modeLabelLanguage);
+    $("auto-track").checked = settings.autoTrack;
+    $("auto-detect").checked = settings.autoDetectMode;
+    $("show-widget").checked = settings.showWidget;
+    const stats = Core.getModeStats(settings, usage, settings.resetAt).filter(stat => stat.enabled);
+    $("stats").innerHTML = stats.map(stat => `<article class="stat-card">
+      <div class="stat-line"><strong dir="auto">${h(label(stat))}</strong><b>${h(n(stat.count))}</b></div>
+      <div class="meta">${h(t("roundCount"))}</div></article>`).join("");
+    $("count-since").textContent = settings.resetAt ? t("countSince", {date:I.dateTime(settings.resetAt,settings)}) : t("countEarliest");
 
+    $("window-range").innerHTML = Core.STATS_WINDOWS.map(window => `<option value="${window.id}" ${window.id === settings.statsWindow ? "selected" : ""}>${h(t("window"+window.id))}</option>`).join("");
+    const windowDef = Core.STATS_WINDOWS.find(window => window.id === settings.statsWindow) || Core.STATS_WINDOWS[0];
+    const recent = Core.getModeStats(settings,usage,Date.now()-windowDef.ms).filter(stat => stat.enabled);
+    $("window-stats").innerHTML = recent.map(stat => `<div class="win-row"><span dir="auto">${h(label(stat))}</span><b>${h(n(stat.count))}</b></div>`).join("") +
+      `<div class="win-row win-total"><span>${h(t("total"))}</span><b>${h(n(recent.reduce((sum,stat)=>sum+stat.count,0)))}</b></div>`;
+    $("daily-mode").innerHTML = `<option value="${Core.DAILY_TOTAL_ID}" ${settings.dailyModeId === Core.DAILY_TOTAL_ID ? "selected" : ""}>${h(t("allModes"))}</option>` + options(settings.dailyModeId);
+    const daily = Core.getDailyModeStats(settings,usage,settings.dailyModeId,settings.statsWindow);
+    $("daily-stats").innerHTML = daily.rows.map(row => `<div class="daily-row"><span>${h(I.date(row.date,settings))}</span><b>${h(n(row.count))}</b></div>`).join("");
+
+    const entries = usage.entries.slice().sort((a,b)=>b.ts-a.ts).slice(0,8);
+    const modes = new Map(settings.modes.map(mode=>[mode.id,mode]));
+    $("recent-list").innerHTML = entries.length ? entries.map(entry => `<div class="recent-row">
+      <div class="recent-info"><strong dir="auto">${h(modes.has(entry.modeId) ? label(modes.get(entry.modeId)) : entry.modeId)}</strong>
+      <span class="meta">${h(I.dateTime(entry.ts,settings))} · ${h(t(sourceKeys[entry.source] || "sourceOther"))}</span></div>
+      <button type="button" class="recent-remove" data-entry-id="${h(entry.id)}" title="${h(t("deleteEntry"))}" aria-label="${h(t("deleteEntry"))}">✕</button></div>`).join("") : `<div class="meta">${h(t("noRecords"))}</div>`;
+  }
   async function refresh() {
-    settings = await Core.getSettings();
-    usage = await Core.getUsage();
+    const version = ++refreshVersion;
+    const [nextSettings,nextUsage] = await Promise.all([Core.getSettings(),Core.getUsage()]);
+    if (version !== refreshVersion) return;
+    settings = nextSettings;
+    usage = nextUsage;
     render();
   }
-
-  async function saveSettingPatch(patch) {
-    settings = await Core.saveSettings(Object.assign({}, settings, patch));
-    render();
-  }
-
-  async function onManualAdd() {
-    await Core.addUsage(settings.activeModeId, "manual-popup");
+  async function patch(value) {
+    await Core.patchSettings(value);
     await refresh();
   }
-
-  async function onUndo() {
-    await Core.removeLastUsage(settings.activeModeId, settings.resetAt);
-    await refresh();
-  }
-
-  async function onResetCounts() {
-    if (!window.confirm("将所有模式的计数清零，从现在重新计数？\n历史记录会完整保留在「更多功能」里。")) return;
-    await saveSettingPatch({ resetAt: Date.now() });
-  }
-
-  async function exportData() {
-    const payload = {
-      exportedAt: new Date().toISOString(),
-      settings: await Core.getSettings(),
-      usage: await Core.getUsage()
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `chatgpt-tracker-${new Date().toISOString().slice(0, 10)}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
   function bindEvents() {
-    els.activeMode.addEventListener("change", async (event) => {
-      await saveSettingPatch({ activeModeId: event.target.value });
+    for (const [id,key,checkbox] of [["active-mode","activeModeId",false],["auto-track","autoTrack",true],["auto-detect","autoDetectMode",true],["show-widget","showWidget",true],["window-range","statsWindow",false],["daily-mode","dailyModeId",false]]) {
+      $(id).addEventListener("change", event => {
+        const value = checkbox ? event.target.checked : event.target.value;
+        run(() => patch({[key]:value}));
+      });
+    }
+    $("manual-add").addEventListener("click", () => run(async () => { await Core.addUsage(settings.activeModeId,"manual-popup");await refresh(); }));
+    $("undo").addEventListener("click", () => run(async () => { await Core.removeLastUsage(settings.activeModeId,settings.resetAt);await refresh(); }));
+    $("reset-counts").addEventListener("click", () => run(async () => { if (window.confirm(t("confirmReset"))) await patch({resetAt:Date.now()}); }));
+    $("export-json").addEventListener("click", () => run(() => I.exportData(Core)));
+    $("open-options").addEventListener("click", () => run(() => chrome.runtime.openOptionsPage()));
+    $("open-chatgpt").addEventListener("click", () => run(() => chrome.tabs.create({url:"https://chatgpt.com/"})));
+    $("recent-list").addEventListener("click", event => {
+      const button = event.target.closest("[data-entry-id]");
+      if (button) { const id=button.dataset.entryId;run(async () => {await Core.removeUsageEntry(id);await refresh();}); }
     });
-
-    els.autoTrack.addEventListener("change", async (event) => {
-      await saveSettingPatch({ autoTrack: event.target.checked });
-    });
-
-    els.autoDetect.addEventListener("change", async (event) => {
-      await saveSettingPatch({ autoDetectMode: event.target.checked });
-    });
-
-    els.showWidget.addEventListener("change", async (event) => {
-      await saveSettingPatch({ showWidget: event.target.checked });
-    });
-
-    els.windowRange.addEventListener("change", async (event) => {
-      await saveSettingPatch({ statsWindow: event.target.value });
-    });
-
-    els.dailyMode.addEventListener("change", async (event) => {
-      await saveSettingPatch({ dailyModeId: event.target.value });
-    });
-
-    els.exportJson.addEventListener("click", exportData);
-    els.resetCounts.addEventListener("click", onResetCounts);
-    els.manualAdd.addEventListener("click", onManualAdd);
-    els.undo.addEventListener("click", onUndo);
-    els.openOptions.addEventListener("click", () => chrome.runtime.openOptionsPage());
-    els.openChatgpt.addEventListener("click", () => chrome.tabs.create({ url: "https://chatgpt.com/" }));
-
-    chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName === "local" && (changes[Core.SETTINGS_KEY] || changes[Core.USAGE_KEY])) {
-        refresh();
-      }
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area === "local" && (changes[Core.SETTINGS_KEY] || changes[Core.USAGE_KEY])) refresh().catch(fail);
     });
   }
-
-  bindEvents();
-  refresh().catch((error) => {
-    document.body.textContent = `Tracker failed to load: ${error.message}`;
-  });
+  refresh().then(bindEvents).catch(fail);
 })();

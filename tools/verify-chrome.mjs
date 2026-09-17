@@ -103,13 +103,13 @@ try{
  await evaluate(page,"window.fixture.hold=true;document.querySelector('#composer-submit-button').dataset.testid='stop-button';document.querySelector('#composer-submit-button').setAttribute('aria-label','停止回答');document.querySelector('#composer-submit-button').click()");
  await pause(250);assert.equal((await entries()).length,passed);report.tests.push({case:'stop is not send',pass:true});
  await evaluate(page,"document.querySelector('#mode').innerHTML='<span style=\"display:none\">Pro</span>'");
- await until(()=>evaluate(page,"document.querySelector('#cmt-mode-select').title.includes('未识别')"),'hidden label fails closed');
+ await until(()=>evaluate(page,"document.querySelector('#cmt-mode-select').title.includes('not recognized')"),'hidden label fails closed');
  report.tests.push({case:'real CSS-hidden label ignored',pass:true});
  const screenshot=await cdp('Page.captureScreenshot',{format:'png'},page);
  fs.writeFileSync(path.join(out,'local-fixture.png'),Buffer.from(screenshot.data,'base64'));
  // Reinject in the extension's actual isolated world using the unchanged scripting permission.
  const before=await evaluate(page,"document.querySelector('#cmt-widget').dataset.cmtInstance");
- await evaluate(popup,`chrome.tabs.query({url:'https://chatgpt.com/__cmt-verification__'}).then(t=>chrome.scripting.executeScript({target:{tabId:t[0].id},files:${JSON.stringify(['src/shared.js','src/site-locales.js','src/site-detection.js','src/content.js'])}}))`);
+ await evaluate(popup,`chrome.tabs.query({url:'https://chatgpt.com/__cmt-verification__'}).then(t=>chrome.scripting.executeScript({target:{tabId:t[0].id},files:${JSON.stringify(['src/shared.js','src/site-locales.js','src/ui-locales.js','src/i18n.js','src/site-detection.js','src/content.js'])}}))`);
  await until(()=>evaluate(page,`document.querySelector('#cmt-widget')?.dataset.cmtInstance!==${JSON.stringify(before)}`),'reinjection takeover');
  await evaluate(page,"window.fixture.hold=false;document.querySelector('#mode').textContent='极高';document.querySelector('#composer-submit-button').dataset.testid='send-button';document.querySelector('#composer-submit-button').setAttribute('aria-label','发送提示词');document.querySelector('#prompt-textarea').textContent='after reinjection';document.querySelector('#composer-submit-button').click()");
  await until(async()=> (await entries()).length===passed+1,'one count after reinjection');passed++;
@@ -123,6 +123,10 @@ try{
  report.tests.push({case:'empty message shell later receives text',pass:true});
  await evaluate(page,`history.replaceState({},'', '/c/local-existing');document.querySelector('#prompt-textarea').textContent='should not count';document.querySelector('#composer-submit-button').click();document.querySelector('#prompt-textarea').textContent='';history.pushState({},'', '/c/another-history');const historical=document.createElement('div');historical.dataset.messageAuthorRole='user';historical.dataset.messageId='historical';historical.textContent='should not count';document.querySelector('#messages').append(historical)`);
  await pause(300);assert.equal((await entries()).length,passed);report.tests.push({case:'cross-conversation history does not count',pass:true});
+ const {verifyLanguageUI}=await import('./verify-language-ui.mjs');
+ const languages=await verifyLanguageUI({id,page,popup,cdp,evaluate,target,until,entries,directory:out});
+ report.tests.push(...languages.results);passed+=languages.addedRecords;
+ report.languagePairsVerified=languages.languagePairs;
  if(process.env.CMT_STORE_ASSETS){
   const {captureStoreAssets}=await import('./capture-store-assets.mjs');
   report.storeAssets=await captureStoreAssets({directory:path.resolve(process.env.CMT_STORE_ASSETS),extensionId:id,cdp,evaluate,target});

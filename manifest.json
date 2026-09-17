@@ -3,7 +3,7 @@
   "name": "ChatGPT Message Tracker",
   "description": "Count your ChatGPT web messages by mode, with local history and detection for multiple ChatGPT interface languages.",
   "homepage_url": "https://github.com/Neptuneeeeeeee/Chatgpt-message-tracker",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
@@ -24,7 +24,7 @@
         "https://chatgpt.com/*",
         "https://chat.openai.com/*"
       ],
-      "js": ["src/shared.js", "src/site-locales.js", "src/site-detection.js", "src/content.js"],
+      "js": ["src/shared.js", "src/site-locales.js", "src/ui-locales.js", "src/i18n.js", "src/site-detection.js", "src/content.js"],
       "css": ["src/content.css"],
       "run_at": "document_idle"
     }

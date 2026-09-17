@@ -3,12 +3,13 @@
 
   const SETTINGS_KEY = "cmt.settings";
   const USAGE_KEY = "cmt.usage";
+  const SUPPORTED_LANGUAGES = ["en-US","zh-CN","zh-TW","zh-HK","es-ES","es-419","pt-BR","pt-PT","fr-FR","fr-CA","de-DE","ja-JP","ko-KR","ar","hi-IN","ru-RU","id-ID","it-IT","tr-TR","vi-VN","th-TH"];
 
   const STATS_WINDOWS = [
-    { id: "3h", label: "最近 3 小时", ms: 3 * 60 * 60 * 1000 },
-    { id: "24h", label: "最近 24 小时", ms: 24 * 60 * 60 * 1000 },
-    { id: "7d", label: "最近 7 天", ms: 7 * 24 * 60 * 60 * 1000 },
-    { id: "30d", label: "最近 30 天", ms: 30 * 24 * 60 * 60 * 1000 }
+    { id: "3h", label: "Last 3 hours", ms: 3 * 60 * 60 * 1000 },
+    { id: "24h", label: "Last 24 hours", ms: 24 * 60 * 60 * 1000 },
+    { id: "7d", label: "Last 7 days", ms: 7 * 24 * 60 * 60 * 1000 },
+    { id: "30d", label: "Last 30 days", ms: 30 * 24 * 60 * 60 * 1000 }
   ];
 
   // 「按天统计」里代表“全部模式合计”的特殊选项。下划线保证它不会和任何真实模式 id 冲突（slugify 会去掉下划线）。
@@ -17,6 +18,8 @@
   const DEFAULT_SETTINGS = {
     version: 1,
     activeModeId: "instant",
+    uiLanguage: "en-US",
+    modeLabelLanguage: "en-US",
     autoTrack: true,
     autoDetectMode: true,
     showWidget: true,
@@ -130,6 +133,9 @@
   function normalizeSettings(settings) {
     const merged = Object.assign(clone(DEFAULT_SETTINGS), settings || {});
     merged.modes = normalizeModes(merged.modes);
+    for (const key of ["uiLanguage", "modeLabelLanguage"]) {
+      if (!SUPPORTED_LANGUAGES.includes(merged[key])) merged[key] = "en-US";
+    }
 
     if (!merged.modes.some((mode) => mode.id === merged.activeModeId && mode.enabled)) {
       if (!merged.modes.some((mode) => mode.enabled)) {
@@ -183,6 +189,15 @@
     const normalized = normalizeSettings(settings);
     await storageSet({ [SETTINGS_KEY]: normalized });
     return normalized;
+  }
+
+  // Individual changes merge with fresh settings instead of stale page snapshots.
+  let settingsWrites = Promise.resolve();
+  function patchSettings(patch) {
+    const value = clone(patch);
+    const result = settingsWrites.then(async () => saveSettings(Object.assign(await getSettings(), value)));
+    settingsWrites = result.catch(() => {});
+    return result;
   }
 
   async function getUsage() {
@@ -330,7 +345,7 @@
 
     return {
       modeId: isTotal ? DAILY_TOTAL_ID : selectedMode.id,
-      modeLabel: isTotal ? "全部模式" : selectedMode.label,
+      modeLabel: isTotal ? "All modes" : selectedMode.label,
       rows
     };
   }
@@ -343,9 +358,9 @@
     return saveUsage(usage);
   }
 
-  function formatDateTime(value) {
+  function formatDateTime(value, locale = "en-US") {
     if (!value) return "";
-    return new Intl.DateTimeFormat(undefined, {
+    return new Intl.DateTimeFormat(locale, {
       month: "short",
       day: "numeric",
       hour: "2-digit",
@@ -363,6 +378,8 @@
     normalizeUsage,
     getSettings,
     saveSettings,
+    patchSettings,
+    SUPPORTED_LANGUAGES,
     getUsage,
     saveUsage,
     addUsage,

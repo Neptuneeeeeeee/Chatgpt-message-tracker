@@ -2,6 +2,8 @@
   "use strict";
 
   const Core = window.ChatGPTTrackerCore;
+  const I = window.ChatGPTTrackerI18n;
+  const t = (key, params) => I.t(key, settings, params);
   const Site = window.ChatGPTTrackerSiteDetection.createDetector(document);
   let lastDetection = { mode: null, locale: null, source: "unrecognized" };
   const WIDGET_ID = "cmt-widget";
@@ -321,8 +323,7 @@
     );
 
     if (mode.id !== settings.activeModeId) {
-      settings.activeModeId = mode.id;
-      settings = await Core.saveSettings(settings);
+      settings = await Core.patchSettings({activeModeId:mode.id});
     }
 
     usage = await Core.addUsage(mode.id, source);
@@ -353,7 +354,7 @@
   }
 
   function statText(stat) {
-    return `${stat.count}`;
+    return I.number(stat.count, settings);
   }
 
   // 仅在模式控件内匹配网页当前语言的官方标签，未知标签使用明确标示的手动模式。
@@ -369,9 +370,9 @@
     const note = widgetRoot()?.querySelector(".cmt-sub");
     const automatic = settings.autoDetectMode && Boolean(lastDetection.mode);
     const title = automatic
-      ? `已识别 ChatGPT 网页模式（${lastDetection.locale || "未声明语言"}）`
-      : settings.autoDetectMode ? "未识别网页模式，按手动选择计数" : "按手动选择计数";
-    const text = automatic ? "本轮发送次数" : "本轮发送次数 · 手动模式";
+      ? t("detected", {language:lastDetection.locale || t("unknownLanguage")})
+      : t(settings.autoDetectMode ? "notDetected" : "manualTip");
+    const text = t("roundCount") + (automatic ? "" : " · " + t("manualMode"));
     if (select && select.title !== title) select.title = title;
     if (note && note.textContent !== text) note.textContent = text;
   }
@@ -384,8 +385,7 @@
     const detected = detectCurrentMode();
     if (!detected) return null;
     if (detected.id !== settings.activeModeId) {
-      settings.activeModeId = detected.id;
-      settings = await Core.saveSettings(settings);
+      settings = await Core.patchSettings({activeModeId:detected.id});
       renderWidget();
     }
     return detected;
@@ -413,34 +413,33 @@
 
     root.innerHTML = `
       <div class="cmt-head">
-        <strong>ChatGPT 计数器</strong>
-        <button type="button" class="cmt-icon" data-cmt-action="toggle" aria-label="折叠计数器">
+        <strong>ChatGPT Tracker</strong>
+        <button type="button" class="cmt-icon" data-cmt-action="toggle" aria-label="${escapeHtml(t(settings.widgetCollapsed ? 'expand' : 'collapse'))}">
           ${settings.widgetCollapsed ? "+" : "-"}
         </button>
       </div>
       <div class="cmt-body ${settings.widgetCollapsed ? "is-hidden" : ""}">
-        <label class="cmt-label" for="cmt-mode-select">模式</label>
+        <label class="cmt-label" for="cmt-mode-select">${escapeHtml(t("currentMode"))}</label>
         <select id="cmt-mode-select" class="cmt-select">
           ${settings.modes
             .filter((mode) => mode.enabled)
-            .map((mode) => {
-              const selected = mode.id === settings.activeModeId ? "selected" : "";
-              return `<option value="${escapeHtml(mode.id)}" ${selected}>${escapeHtml(mode.label)}</option>`;
-            })
+            .map((mode) => I.option(mode, settings.activeModeId, settings))
             .join("")}
         </select>
         <div class="cmt-metric">
-          <span>${escapeHtml(activeStat.label)}</span>
+          <span dir="auto">${escapeHtml(I.modeLabel(activeStat, settings))}</span>
           <b>${escapeHtml(statText(activeStat))}</b>
         </div>
-        <div class="cmt-sub">本轮发送次数</div>
+        <div class="cmt-sub">${escapeHtml(t("roundCount"))}</div>
         <div class="cmt-actions">
           <button type="button" data-cmt-action="add">+1</button>
-          <button type="button" data-cmt-action="undo">撤销</button>
+          <button type="button" data-cmt-action="undo">${escapeHtml(t("undo"))}</button>
         </div>
       </div>
     `;
 
+    I.apply(root, settings);
+    root.querySelector("#cmt-mode-select").dir = I.direction(settings.modeLabelLanguage);
     updateDetectionStatus();
     root.querySelector('[data-cmt-action="toggle"]').addEventListener("click", () => runAsync(onToggle));
     const select = root.querySelector("#cmt-mode-select");
@@ -460,15 +459,13 @@
 
   async function onToggle() {
     if (!extensionAvailable) return;
-    settings.widgetCollapsed = !settings.widgetCollapsed;
-    settings = await Core.saveSettings(settings);
+    settings = await Core.patchSettings({widgetCollapsed:!settings.widgetCollapsed});
     renderWidget();
   }
 
   async function onModeChange(event) {
     if (!extensionAvailable) return;
-    settings.activeModeId = event.target.value;
-    settings = await Core.saveSettings(settings);
+    settings = await Core.patchSettings({activeModeId:event.target.value});
     renderWidget();
   }
 

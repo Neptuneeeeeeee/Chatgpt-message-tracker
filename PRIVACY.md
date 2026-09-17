@@ -1,6 +1,6 @@
 # Privacy Policy — ChatGPT Message Tracker
 
-Effective date: 17 September 2026. Applies to extension version 0.3.0.
+Effective date: 17 September 2026. Applies to extension version 0.4.0.
 
 ChatGPT Message Tracker is an independent, local message counter maintained in the Neptuneeeeeeee/Chatgpt-message-tracker GitHub repository. It is not affiliated with or endorsed by OpenAI. This policy describes the extension itself, not ChatGPT, Chrome, GitHub, or the Chrome Web Store.
 
@@ -40,7 +40,7 @@ For privacy questions, open an issue at https://github.com/Neptuneeeeeeee/Chatgp
 
 # 隐私政策 — ChatGPT Message Tracker
 
-生效日期：2026 年 9 月 17 日。适用于 0.3.0 版本。
+生效日期：2026 年 9 月 17 日。适用于 0.4.0 版本。
 
 本扩展是独立的本地消息计数工具，由 Neptuneeeeeeee/Chatgpt-message-tracker GitHub 仓库维护，与 OpenAI 无隶属、合作或官方背书关系。本政策说明扩展本身，不代替 ChatGPT、Chrome、GitHub 或 Chrome Web Store 的政策。
 
