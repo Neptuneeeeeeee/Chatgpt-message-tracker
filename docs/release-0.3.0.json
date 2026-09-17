@@ -1,0 +1,153 @@
+{
+  "preparedAt": "2026-09-17T04:29:02.837246+00:00",
+  "version": "0.3.0",
+  "unitTests": {
+    "tests": 206,
+    "pass": 206,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "packagedChromeVerification": {
+    "browser": "Chrome/153.0.8010.48",
+    "scenarios": 112,
+    "sendRecords": 110,
+    "pass": true,
+    "runtimeErrors": [],
+    "browserExit": {
+      "code": 0,
+      "signal": null
+    },
+    "temporaryProfileRemoved": true,
+    "liveChatGPTAccountVerified": false
+  },
+  "assets": {
+    "promo-440x280.jpg": [
+      440,
+      280
+    ],
+    "screenshot-01-1280x800.jpg": [
+      1280,
+      800
+    ],
+    "screenshot-02-1280x800.jpg": [
+      1280,
+      800
+    ],
+    "icon-128.png": [
+      128,
+      128
+    ]
+  },
+  "packages": {
+    "chatgpt-message-tracker-0.3.0-publish-kit.zip": {
+      "bytes": 320964,
+      "sha256": "079f724650abe22f19b9b99cee4098e8e5352d9773611d8ee119e5cba6b8e004"
+    },
+    "chatgpt-message-tracker-0.3.0-chrome-web-store.zip": {
+      "bytes": 102312,
+      "sha256": "ab3d62328c81d50d2019c5a457b2b14d7bab9f6d58fc1cf793cb608e16f9590e"
+    }
+  },
+  "packageAudit": {
+    "version": "0.3.0",
+    "uploadFile": "chatgpt-message-tracker-0.3.0-chrome-web-store.zip",
+    "sha256": "ab3d62328c81d50d2019c5a457b2b14d7bab9f6d58fc1cf793cb608e16f9590e",
+    "bytes": 102312,
+    "fileCount": 17,
+    "manifestAtRoot": true,
+    "zipRoundTripVerified": true,
+    "runtimeOnlyAllowlist": true,
+    "permissions": [
+      "storage",
+      "scripting"
+    ],
+    "hostPermissions": [
+      "https://chatgpt.com/*",
+      "https://chat.openai.com/*"
+    ],
+    "files": {
+      "icons/icon-128.png": {
+        "bytes": 9837,
+        "sha256": "50cb4f187524445fc574b16448ff4a3b172a343ac95fb8740aca8d8c7c8ae5eb"
+      },
+      "icons/icon-16.png": {
+        "bytes": 738,
+        "sha256": "97a3830d56ab217a5a5cb647a0d348bae13e212399cbcdd3028f8c5c4bc6ce71"
+      },
+      "icons/icon-32.png": {
+        "bytes": 1794,
+        "sha256": "7aaa333afc170fdea7d2f5378320fcb044b4347a9e4f1e3fd4e93f7af8099fb8"
+      },
+      "icons/icon-48.png": {
+        "bytes": 3074,
+        "sha256": "0e09755ed9796a8eaa187f8a59c4a1f5d2c73645a9218b766742ea41e7e2699a"
+      },
+      "manifest.json": {
+        "bytes": 1240,
+        "sha256": "dda2cef011614995cb910eaf18c9d703e3a6ed9ade6e31975ef984b9dc481d9d"
+      },
+      "src/background.js": {
+        "bytes": 1376,
+        "sha256": "0d02ba2c1e7fdedf9ac073b0ff4e2404e3ca2b96d8663b0a07c506381511c70d"
+      },
+      "src/content.css": {
+        "bytes": 3043,
+        "sha256": "8d47743d2d0a1247a82bc02540fca370e3a9a39f14721617a385ba9ae7f7a81f"
+      },
+      "src/content.js": {
+        "bytes": 23088,
+        "sha256": "2b93ac86bf271fb37810a2f6773d1f1f818f3c9f5e6a1fc1395991cccf0a4f83"
+      },
+      "src/options.css": {
+        "bytes": 1988,
+        "sha256": "9e1ef67c690e3f6d9540755026b79a2c94aee954410d98cbb71e12dbfd0d2470"
+      },
+      "src/options.html": {
+        "bytes": 1800,
+        "sha256": "aa5bdf9a62a3eb1463c672dfd5527646c9daf7c71014ecfb207180c773dc23bd"
+      },
+      "src/options.js": {
+        "bytes": 4084,
+        "sha256": "cec33d2f92fe76feba8d5e2597308f3fce0d037e6d9be5a17179580b4250879f"
+      },
+      "src/popup.css": {
+        "bytes": 3834,
+        "sha256": "7d102cd94317dbf39c38d8927dcfde300df637fcf94db7eb3c0daac0ab0fb310"
+      },
+      "src/popup.html": {
+        "bytes": 2424,
+        "sha256": "f7156246f1a6c75f12b411cedf6a91f2240f54767ec6b722b8ae38fb44572ff7"
+      },
+      "src/popup.js": {
+        "bytes": 9036,
+        "sha256": "a66d1f8b694694ae821fb7059f6ba6e83a5cbda9bf986719026a22416c458fd8"
+      },
+      "src/shared.js": {
+        "bytes": 10625,
+        "sha256": "78afa81cb267ba89bffcaf53365f26cc0b929f4bd7c289d45030a3743cc647d0"
+      },
+      "src/site-detection.js": {
+        "bytes": 9775,
+        "sha256": "93bf3fa62c41462606421349434ccef537b46eae0fda34dadd816553003f8075"
+      },
+      "src/site-locales.js": {
+        "bytes": 12712,
+        "sha256": "64a060182cefaac3a19af8cea2c777a109f0514e559d5a8813c5302b655e9072"
+      }
+    }
+  },
+  "browserStderrDiagnosticCategories": {
+    "ui/display/mac/cv_display_link_mac.mm:195": 34,
+    "chrome/browser/ui/webui/ntp/new_tab_ui.cc:54": 2,
+    "google_apis/gcm/engine/registration_request.cc:291": 2,
+    "third_party/crashpad/crashpad/util/file/file_io_posix.cc:145": 6
+  },
+  "privacyPolicyPath": "PRIVACY.md",
+  "publishedToChromeWebStore": false,
+  "notes": [
+    "Extension ZIP was unpacked, loaded, and verified in isolated Chrome against a locally fulfilled fixture.",
+    "Store images use local test records, not private account content.",
+    "Live-account labels may differ. Submission, publisher certifications, and final store approval remain separate."
+  ]
+}

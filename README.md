@@ -1,8 +1,12 @@
 # ChatGPT Message Tracker
 
+Independent local counter; not affiliated with or endorsed by OpenAI. 独立工具，非 OpenAI 官方用量统计。
+
+[Privacy policy / 隐私政策](PRIVACY.md) · [Chrome Web Store 发布清单](store/PUBLISHING.md)
+
 ## 中文介绍
 
-ChatGPT Pro 对提问次数有明显限制，尤其是 `Pro` 等高强度模式的可用次数更有限。这个扩展的目的很简单：在你使用 ChatGPT 网页版时，按模式记录已经发送了多少次消息，让你能随时知道自己的使用情况。
+在使用 ChatGPT 网页版时，按模式记录已经发送的消息次数，查看保留的近期历史，并随时手动修正。它是独立的本地计数工具，不查询官方配额、不预测剩余额度，也不提供 OpenAI 官方用量数据。
 
 它是一个本地 Chrome 扩展，只做个人计数记录，不用于绕过、预测或替代 OpenAI 官方的用量限制。
 
@@ -39,7 +43,7 @@ ChatGPT Pro 对提问次数有明显限制，尤其是 `Pro` 等高强度模式�
 
 ### 隐私
 
-这个扩展不会上传数据，也不会读取或保存你的对话内容。每条记录只包含：
+这个扩展不会上传数据，也不会持久保存对话内容。为确认发送和防止重复计数，它会在当前页面内存中临时比对输入框草稿与新出现的用户消息；关闭页面后这些临时状态即消失。保存的每条记录只包含：
 
 - 模式 ID
 - 时间戳
@@ -57,9 +61,30 @@ ChatGPT Pro 对提问次数有明显限制，尤其是 `Pro` 等高强度模式�
 
 修改代码后，回到 `chrome://extensions/`，点击 `ChatGPT Message Tracker` 扩展卡片上的刷新按钮。
 
+### 多语言模式识别（0.3.0）
+
+识别依据是 ChatGPT 页面自己的语言声明和模式控件中的实际标签，不根据浏览器语言或提问语言推测，也不自行翻译英文模式名。内置 21 个语言/地区变体的官方资源词条，来源、原始消息键和 SHA-256 保存在 `docs/site-language-evidence.json`。部分词条来自同一官方网页的语音设置模块；服务器可覆盖文字输入框的显示名称，因此不能把资源存在误当成每个账户都实测通过。未知标签会明确显示手动模式。
+
+简繁中文、英语和其他语言共用既有的五个统计 ID。只对确认出现的新用户消息计数；清空草稿、输入法选字、停止回答和切换历史会话不应加一。稳定消息 ID 用来去重，同样的文字真实发送两次仍计两次。
+
+验证命令：`npm ci`、`npm run check`、`npm test`。运行 `npm run test:chrome` 可在临时配置中加载真实扩展进行 Chrome 本地页面测试，不使用已有 Chrome 配置、登录信息或历史计数。它不等于已登录 ChatGPT 网页的端到端验收。语言资源复核：`node --expose-gc tools/verify-evidence.mjs /path/to/exported-official-assets`。
+
+### Chrome Web Store 打包
+
+```sh
+npm ci
+npm run check
+npm test
+python3 tools/build_release.py
+```
+
+上传 `dist/0.3.0/chatgpt-message-tracker-0.3.0-chrome-web-store.zip`；同目录的 `publish-kit.zip` 是发布者材料，不是扩展上传包。打包采用明确文件清单，不包含依赖目录、测试、原始网站资源、浏览器数据或 Git 文件。`store/` 提供中英文介绍、权限／隐私填写说明，以及真实扩展界面的演示截图。
+
+重新验证打包后的运行文件：先运行 `python3 tools/build_release.py --extension-only`，再运行 `CMT_EXTENSION_ROOT="$PWD/dist/0.3.0/unpacked" npm run test:chrome`。测试使用隔离配置和本地测试页面，不代表已完成真实账户的语言切换验收。
+
 ## English Introduction
 
-ChatGPT Pro has meaningful message limits, especially for high-intensity modes such as `Pro`. This extension is built to solve one practical problem: when you use ChatGPT on the web, it counts how many messages you have sent in each mode so you can keep track of your usage.
+Count messages you send on the ChatGPT website by mode, review retained recent history, and correct records manually. This is an independent local counter. It does not query official quotas, predict remaining allowance, or provide official OpenAI usage data.
 
 It is a local Chrome extension for personal tracking only. It is not designed to bypass, predict, or replace OpenAI's official usage limits.
 
@@ -96,7 +121,7 @@ It is a local Chrome extension for personal tracking only. It is not designed to
 
 ### Privacy
 
-This extension does not upload data. It does not read or store your conversation content. Usage entries contain only:
+This extension does not upload data or persist conversation content. It temporarily compares the composer draft with newly rendered user messages in page memory to confirm sends and avoid double counting. These transient states disappear when the page closes. Persisted usage entries contain only:
 
 - mode id
 - timestamp

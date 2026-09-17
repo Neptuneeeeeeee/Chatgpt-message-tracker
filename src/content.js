@@ -2,11 +2,12 @@
   "use strict";
 
   const Core = window.ChatGPTTrackerCore;
+  const Site = window.ChatGPTTrackerSiteDetection.createDetector(document);
+  let lastDetection = { mode: null, locale: null, source: "unrecognized" };
   const WIDGET_ID = "cmt-widget";
   const TAKEOVER_EVENT = "cmt-tracker:takeover";
   const COMPOSER_SELECTOR = '#prompt-textarea, [data-testid="prompt-textarea"]';
   const USER_MESSAGE_SELECTOR = '[data-message-author-role="user"]';
-  const SEND_BUTTON_SELECTOR = '[data-testid="send-button"], #composer-submit-button, button[type="submit"]';
   const DETECT_DEBOUNCE_MS = 1500;
   // 发送意图（回车 / 点发送）之后，多久之内出现的新用户消息算作这次发送
   const INTENT_WINDOW_MS = 10000;
@@ -33,6 +34,7 @@
   // 已经见过的用户消息节点 / id：只有“新冒出来的”才可能是这次发送
   const knownUserMessages = new WeakSet();
   const knownUserMessageIds = new Set();
+  const unconfirmedUserMessages = new WeakSet();
   // 最近一次发送意图：{ at, mode, source, draft, hadContent, composer, timer }
   let pendingIntent = null;
   // 输入框里最近一次非空内容（去掉空白），用来和新出现的用户消息对文字
@@ -118,12 +120,8 @@
 
   function getComposer(target) {
     if (!target || !(target instanceof Element)) return null;
-    return (
-      target.closest("#prompt-textarea") ||
-      target.closest('[data-testid="prompt-textarea"]') ||
-      target.closest("textarea") ||
-      target.closest('[contenteditable="true"]')
-    );
+    const composer = getComposerElement();
+    return composer && (target === composer || composer.contains(target)) ? composer : null;
   }
 
   function readText(element) {
@@ -145,42 +143,23 @@
   // 记下输入框当前内容。发送时 ChatGPT 会马上清空输入框，所以必须在那之前（按键、点击的捕获阶段）留底
   function sampleDraft(element) {
     const text = normalizeText(readText(element || getComposerElement()));
-    if (text) lastDraft = { text, at: Date.now() };
+    if (text) lastDraft = { text, at: Date.now(), path: window.location.pathname };
   }
 
-  function getComposerRoot() {
-    const input = getComposerElement();
-    if (!input) return null;
-    return input.closest("form") || input.parentElement;
+  function sameConversation(path, allowNewConversation = false) {
+    const current = window.location.pathname;
+    if (path === current) return true;
+    // A first send may create /c/<id>; moving between existing chats is navigation, not sending.
+    return Boolean(allowNewConversation && path && !path.includes("/c/") && current.includes("/c/"));
   }
 
   // 只带附件没有文字时，输入框是空的，但发送按钮是亮的（生成中的“停止”按钮不算）
   function sendButtonReady() {
-    const root = getComposerRoot();
-    if (!root) return false;
-    const button = root.querySelector(SEND_BUTTON_SELECTOR);
-    return Boolean(button && isSendButton(button));
+    return Site.sendButtonReady();
   }
 
   function isSendButton(target) {
-    if (!target || !(target instanceof Element)) return false;
-    const button = target.closest("button");
-    if (!button) return false;
-    if (button.disabled || button.getAttribute("aria-disabled") === "true") return false;
-
-    const label = [
-      button.getAttribute("aria-label"),
-      button.getAttribute("data-testid"),
-      button.textContent
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-
-    if (label.includes("stop") || label.includes("停止")) return false;
-    if (label.includes("send") || label.includes("发送") || label.includes("submit")) return true;
-    if (button.matches('[data-testid="send-button"], button[type="submit"]')) return true;
-    return false;
+    return Site.isSendButton(target);
   }
 
   // ---- 发送识别：意图 + 页面确认 ----
@@ -205,6 +184,7 @@
     clearPendingIntent();
     pendingIntent = {
       at: Date.now(),
+      path: window.location.pathname,
       mode: detected || getActiveMode(),
       source,
       draft,
@@ -258,8 +238,9 @@
   function handleNewUserMessages(candidates) {
     if (!extensionAvailable) return;
     const fresh = [];
-    for (const element of candidates) {
-      if (isKnownUserMessage(element)) continue;
+    for (const element of new Set(candidates)) {
+      if (isKnownUserMessage(element) && !unconfirmedUserMessages.has(element)) continue;
+      unconfirmedUserMessages.delete(element);
       rememberUserMessage(element);
       fresh.push(element);
     }
@@ -274,15 +255,26 @@
 
     const now = Date.now();
     const text = normalizeText(element.textContent);
-    const intent = pendingIntent && now - pendingIntent.at <= INTENT_WINDOW_MS ? pendingIntent : null;
-    const draftFresh = Boolean(lastDraft.text) && now - lastDraft.at <= DRAFT_MAX_AGE_MS;
-    const matchesDraft =
-      textMatchesDraft(text, intent ? intent.draft : "") ||
-      (draftFresh && textMatchesDraft(text, lastDraft.text));
+    const intent = pendingIntent && now - pendingIntent.at <= INTENT_WINDOW_MS &&
+      sameConversation(pendingIntent.path, true) ? pendingIntent : null;
+    const draftFresh = Boolean(lastDraft.text) && now - lastDraft.at <= DRAFT_MAX_AGE_MS &&
+      sameConversation(lastDraft.path);
+    const matchesDraft = textMatchesDraft(text, intent ? intent.draft : (draftFresh ? lastDraft.text : ""));
 
-    // 既没有发送意图、文字也对不上草稿：多半是切到只有一条消息的会话之类的渲染，忽略
-    if (!intent && !matchesDraft) return;
-    if (text && text === lastCounted.text && now - lastCounted.at < DEDUPE_MS) return;
+    // Some page renders create the user-message shell before adding its text.
+    if (intent && intent.draft && !text) {
+      unconfirmedUserMessages.add(element);
+      return;
+    }
+    // An intent is not proof by itself: an unrelated history node must not confirm it.
+    if (intent) {
+      if (!intent.hadContent || (intent.draft && !matchesDraft)) return;
+    } else if (!matchesDraft || composerHasText(getComposerElement())) {
+      return;
+    }
+    // Stable IDs already deduplicate remounts. Two intentional identical-text sends with
+    // distinct IDs (e.g. 继续 twice) must both count; text-only dedupe is the last resort.
+    if (!element.getAttribute("data-message-id") && text && text === lastCounted.text && now - lastCounted.at < DEDUPE_MS) return;
 
     commitSend(intent ? intent.mode : null, intent ? intent.source : "dom-observed", text);
   }
@@ -303,20 +295,15 @@
     handleNewUserMessages(Array.from(document.querySelectorAll(USER_MESSAGE_SELECTOR)));
     if (pendingIntent !== intent) return; // 补扫时已经确认并计数
 
-    clearPendingIntent();
-    if (!intent.hadContent) return;
-
-    // 页面能渲染用户消息，却一直没有新的出现：这次没发出去（比如生成中按了回车），不记
-    if (document.querySelector(USER_MESSAGE_SELECTOR)) {
-      console.debug(`[ChatGPT Tracker] drop ${intent.source}: no new message appeared`);
+    // Clearing/unmounting the input is not proof of sending. Keep the original mode
+    // briefly for slow page rendering, then drop an unconfirmed intent without counting.
+    const remaining = INTENT_WINDOW_MS - (Date.now() - intent.at);
+    if (remaining > 0 && sameConversation(intent.path, true)) {
+      intent.timer = window.setTimeout(() => runAsync(resolvePendingIntent), remaining + 1);
       return;
     }
-
-    // 页面上一条用户消息都找不到（ChatGPT 改版换了结构？）：退回到“输入框被清空即视为已发送”
-    const composer = intent.composer;
-    const cleared = !composer || !composer.isConnected || !composerHasText(composer);
-    if (!cleared) return;
-    commitSend(intent.mode, intent.source, intent.draft);
+    clearPendingIntent();
+    console.debug(`[ChatGPT Tracker] drop ${intent.source}: no confirmed user message`);
   }
 
   async function trackUsage(preferredMode, source) {
@@ -369,127 +356,24 @@
     return `${stat.count}`;
   }
 
-  function matchesWholeWord(text, term) {
-    if (!term) return false;
-    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`).test(text);
-  }
-
-  function findModeByText(text) {
-    const normalizedText = String(text || "").toLowerCase();
-    if (!normalizedText) return null;
-
-    return settings.modes
-      .filter((mode) => mode.enabled)
-      .slice()
-      .sort((a, b) => b.label.length - a.label.length)
-      .find((mode) => {
-        const id = mode.id.toLowerCase();
-        const label = mode.label.toLowerCase();
-        return matchesWholeWord(normalizedText, label) || matchesWholeWord(normalizedText, id);
-      });
-  }
-
-  function isVisibleElement(element) {
-    const rect = element.getBoundingClientRect();
-    const styles = window.getComputedStyle(element);
-    return rect.width > 0 && rect.height > 0 && styles.visibility !== "hidden" && styles.display !== "none";
-  }
-
-  function elementText(element) {
-    return [
-      element.getAttribute("aria-label"),
-      element.getAttribute("data-testid"),
-      element.textContent
-    ]
-      .filter(Boolean)
-      .join(" ");
-  }
-
-  // 模式名可能和模型号拼在同一个按钮里：Pro 档时输入框旁的按钮显示 "6Pro"，是 "6" 和 "Pro" 两个 span；
-  // 其他档位（Instant / Medium / High / Extra High）按钮文字就是模式名本身。
-  // 所以除了整个按钮的文字，还要看每个叶子节点的文字，以及去掉开头模型号之后的文字。
-  function exactTextCandidates(element) {
-    const raws = [element.textContent, element.getAttribute("aria-label")];
-    element.querySelectorAll("*").forEach((child) => {
-      if (!child.children.length) raws.push(child.textContent);
-    });
-
-    const texts = [];
-    for (const raw of raws) {
-      const text = String(raw || "").replace(/\s+/g, " ").trim().toLowerCase();
-      if (!text) continue;
-      texts.push(text);
-      const stripped = text.replace(/^(?:gpt-?)?\d+(?:\.\d+)?\s*/, "");
-      if (stripped && stripped !== text) texts.push(stripped);
-    }
-    return texts;
-  }
-
-  function findModeByExactText(element) {
-    const enabled = settings.modes.filter((candidate) => candidate.enabled);
-    for (const text of exactTextCandidates(element)) {
-      const mode = enabled.find((candidate) => {
-        return text === candidate.label.toLowerCase() || text === candidate.id.toLowerCase();
-      });
-      if (mode) return mode;
-    }
-    return null;
-  }
-
-  function findCheckedMenuMode() {
-    const checked = document.querySelectorAll(
-      '[role="menuitemradio"][aria-checked="true"], [aria-selected="true"], [data-state="checked"]'
-    );
-    for (const element of checked) {
-      if (!isVisibleElement(element)) continue;
-      const mode = findModeByText(elementText(element));
-      if (mode) return mode;
-    }
-    return null;
-  }
-
-  function composerCandidates() {
-    const root = getComposerRoot();
-    if (!root) return [];
-    return Array.from(root.querySelectorAll('button, [role="button"], [aria-haspopup="menu"], [data-testid]'))
-      .slice(0, 40)
-      .filter(isVisibleElement);
-  }
-
-  function modelSwitcherCandidates() {
-    return Array.from(
-      document.querySelectorAll('[data-testid*="model-switcher"], [data-testid*="model"], button[aria-label*="model" i]')
-    )
-      .slice(0, 12)
-      .filter(isVisibleElement);
-  }
-
-  // 识别按可信度分层：菜单勾选项 > 输入框区域 > 顶部模型选择器（Pro 这类模型级选择可能只显示在那里）。
-  // 每个区域内：文本恰好等于模式名 > 包含模式词（取最长的模式名，防止 High 抢走 Extra High）。
+  // 仅在模式控件内匹配网页当前语言的官方标签，未知标签使用明确标示的手动模式。
   function detectCurrentMode() {
-    const checkedMode = findCheckedMenuMode();
-    if (checkedMode) return checkedMode;
+    lastDetection = Site.detect(settings.modes);
+    updateDetectionStatus();
+    return lastDetection.mode;
+  }
 
-    const groups = [composerCandidates(), modelSwitcherCandidates()];
-
-    for (const candidates of groups) {
-      for (const element of candidates) {
-        const mode = findModeByExactText(element);
-        if (mode) return mode;
-      }
-
-      let best = null;
-      for (const element of candidates) {
-        const mode = findModeByText(elementText(element));
-        if (mode && (!best || mode.label.length > best.label.length)) {
-          best = mode;
-        }
-      }
-      if (best) return best;
-    }
-
-    return null;
+  function updateDetectionStatus() {
+    if (!settings) return;
+    const select = widgetRoot()?.querySelector("#cmt-mode-select");
+    const note = widgetRoot()?.querySelector(".cmt-sub");
+    const automatic = settings.autoDetectMode && Boolean(lastDetection.mode);
+    const title = automatic
+      ? `已识别 ChatGPT 网页模式（${lastDetection.locale || "未声明语言"}）`
+      : settings.autoDetectMode ? "未识别网页模式，按手动选择计数" : "按手动选择计数";
+    const text = automatic ? "本轮发送次数" : "本轮发送次数 · 手动模式";
+    if (select && select.title !== title) select.title = title;
+    if (note && note.textContent !== text) note.textContent = text;
   }
 
   async function syncDetectedMode() {
@@ -557,6 +441,7 @@
       </div>
     `;
 
+    updateDetectionStatus();
     root.querySelector('[data-cmt-action="toggle"]').addEventListener("click", () => runAsync(onToggle));
     const select = root.querySelector("#cmt-mode-select");
     if (select) select.addEventListener("change", (event) => runAsync(() => onModeChange(event)));
@@ -652,15 +537,17 @@
         // 输入框内容变化也会触发这里，顺手留底；发送后输入框为空，不会覆盖之前的草稿
         sampleDraft();
         const added = [];
+        const deferred = [];
         for (const record of records) {
           for (const node of record.addedNodes) {
             if (node.nodeType === Node.ELEMENT_NODE) added.push(node);
           }
+          const target = record.target.nodeType === Node.ELEMENT_NODE ? record.target : record.target.parentElement;
+          const message = target && target.closest(USER_MESSAGE_SELECTOR);
+          if (message && unconfirmedUserMessages.has(message)) deferred.push(message);
         }
-        if (added.length) {
-          const candidates = collectUserMessages(added);
-          if (candidates.length) handleNewUserMessages(candidates);
-        }
+        const candidates = [...collectUserMessages(added), ...deferred];
+        if (candidates.length) handleNewUserMessages(candidates);
       } catch (error) {
         handleAsyncError(error);
       }
@@ -668,7 +555,10 @@
       detectTimer = window.setTimeout(() => runAsync(syncDetectedMode), DETECT_DEBOUNCE_MS);
     });
     // 观察 documentElement 而不是 body：后台补注入可能发生在 body 还没建好的时候
-    observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+    observer.observe(document.documentElement, {
+      childList: true, subtree: true, characterData: true, attributes: true,
+      attributeFilter: ["lang", "aria-label", "aria-checked", "aria-selected", "aria-expanded", "aria-controls", "data-state", "data-testid"]
+    });
 
     document.addEventListener(
       "visibilitychange",

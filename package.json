@@ -1,0 +1,15 @@
+{
+  "name": "chatgpt-message-tracker",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Development checks for the dependency-free Chrome extension",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 tests/*.test.cjs",
+    "check": "node tools/check-extension.mjs",
+    "test:chrome": "node tools/verify-chrome.mjs"
+  },
+  "devDependencies": {
+    "acorn": "^8.15.0",
+    "jsdom": "^26.1.0"
+  }
+}

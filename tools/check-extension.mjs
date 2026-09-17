@@ -1,0 +1,31 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import {parse} from 'acorn';
+const root=path.resolve(import.meta.dirname,'..');
+const read=file=>fs.readFileSync(path.join(root,file),'utf8');
+const manifest=JSON.parse(read('manifest.json'));
+const pkg=JSON.parse(read('package.json'));
+assert.equal(manifest.version,pkg.version);
+assert.deepEqual(manifest.permissions,['storage','scripting']);
+assert.deepEqual(manifest.host_permissions,['https://chatgpt.com/*','https://chat.openai.com/*']);
+const expected=['src/shared.js','src/site-locales.js','src/site-detection.js','src/content.js'];
+assert.deepEqual(manifest.content_scripts[0].js,expected);
+const injected=read('src/background.js').match(/executeScript\(\{[^\n]*files: (\[[^\]]+\])/);
+assert.ok(injected,'Background reinjection list exists');assert.deepEqual(JSON.parse(injected[1]),expected);
+const checked=[];
+for(const dir of ['src','tools','tests'])for(const file of fs.readdirSync(path.join(root,dir))){
+ if(!/\.(?:js|mjs|cjs)$/.test(file))continue;
+ const name=dir+'/'+file;parse(read(name),{ecmaVersion:'latest',sourceType:file.endsWith('.mjs')?'module':'script'});checked.push(name);
+}
+const context={window:{}};vm.createContext(context);new vm.Script(read('src/shared.js')).runInContext(context);
+assert.deepEqual(Array.from(context.window.ChatGPTTrackerCore.DEFAULT_SETTINGS.modes,m=>m.id),['instant','medium','high','extra-high','pro']);
+assert.equal(context.window.ChatGPTTrackerCore.SETTINGS_KEY,'cmt.settings');assert.equal(context.window.ChatGPTTrackerCore.USAGE_KEY,'cmt.usage');
+new vm.Script(read('src/site-locales.js')).runInContext(context);
+const locales=Object.keys(context.window.ChatGPTTrackerSiteLocales);
+assert.equal(locales.length,21);
+const bytes=['src/site-locales.js','src/site-detection.js'].reduce((n,file)=>n+Buffer.byteLength(read(file)),0);
+assert.ok(bytes<96000,'Language support stays small and fully bundled');
+for(const file of ['src/site-locales.js','src/site-detection.js'])assert.doesNotMatch(read(file),/\b(?:fetch|XMLHttpRequest|eval)\s*\(/,'No network or remote evaluation in language support');
+console.log(JSON.stringify({version:manifest.version,syntaxChecked:checked.length,localeVariants:locales.length,languageSupportBytes:bytes,injectionPathsMatch:true,permissionsUnchanged:true,storageKeysAndModeIDsPreserved:true},null,2));

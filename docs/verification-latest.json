@@ -1,0 +1,646 @@
+{
+  "recordedAt": "2026-09-16T18:11:44.653047+00:00",
+  "scope": "Actual extension on isolated, locally fulfilled test page. NOT live logged-in ChatGPT.",
+  "unitTests": {
+    "tests": 206,
+    "pass": 206,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "staticChecks": {
+    "version": "0.3.0",
+    "syntaxChecked": 17,
+    "localeVariants": 21,
+    "languageSupportBytes": 22487,
+    "injectionPathsMatch": true,
+    "permissionsUnchanged": true,
+    "storageKeysAndModeIDsPreserved": true
+  },
+  "browser": {
+    "kind": "real Chrome / installed MV3 extension / intercepted LOCAL fixture",
+    "liveChatGPTAccountVerified": false,
+    "profileIsolated": true,
+    "tests": [
+      {
+        "locale": "en-US",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "en-US",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "en-US",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "en-US",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "en-US",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "zh-CN",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "zh-CN",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "zh-CN",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "zh-CN",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "zh-CN",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "zh-TW",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "zh-TW",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "zh-TW",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "zh-TW",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "zh-TW",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "zh-HK",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "zh-HK",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "zh-HK",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "zh-HK",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "zh-HK",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "es-ES",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "es-ES",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "es-ES",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "es-ES",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "es-ES",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "es-419",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "es-419",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "es-419",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "es-419",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "es-419",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "pt-BR",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "pt-BR",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "pt-BR",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "pt-BR",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "pt-BR",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "pt-PT",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "pt-PT",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "pt-PT",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "pt-PT",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "pt-PT",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "fr-FR",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "fr-FR",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "fr-FR",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "fr-FR",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "fr-FR",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "fr-CA",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "fr-CA",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "fr-CA",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "fr-CA",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "fr-CA",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "de-DE",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "de-DE",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "de-DE",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "de-DE",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "de-DE",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "ja-JP",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "ja-JP",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "ja-JP",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "ja-JP",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "ja-JP",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "ko-KR",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "ko-KR",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "ko-KR",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "ko-KR",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "ko-KR",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "ar",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "ar",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "ar",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "ar",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "ar",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "hi-IN",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "hi-IN",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "hi-IN",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "hi-IN",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "hi-IN",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "ru-RU",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "ru-RU",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "ru-RU",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "ru-RU",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "ru-RU",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "id-ID",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "id-ID",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "id-ID",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "id-ID",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "id-ID",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "it-IT",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "it-IT",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "it-IT",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "it-IT",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "it-IT",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "tr-TR",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "tr-TR",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "tr-TR",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "tr-TR",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "tr-TR",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "vi-VN",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "vi-VN",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "vi-VN",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "vi-VN",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "vi-VN",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "locale": "th-TH",
+        "mode": "instant",
+        "pass": true
+      },
+      {
+        "locale": "th-TH",
+        "mode": "medium",
+        "pass": true
+      },
+      {
+        "locale": "th-TH",
+        "mode": "high",
+        "pass": true
+      },
+      {
+        "locale": "th-TH",
+        "mode": "extra-high",
+        "pass": true
+      },
+      {
+        "locale": "th-TH",
+        "mode": "pro",
+        "pass": true
+      },
+      {
+        "case": "identical text, distinct message IDs",
+        "pass": true
+      },
+      {
+        "case": "stop is not send",
+        "pass": true
+      },
+      {
+        "case": "real CSS-hidden label ignored",
+        "pass": true
+      },
+      {
+        "case": "isolated-world reinjection counts once",
+        "pass": true
+      },
+      {
+        "case": "nested label keeps Extra High",
+        "pass": true
+      },
+      {
+        "case": "empty message shell later receives text",
+        "pass": true
+      },
+      {
+        "case": "cross-conversation history does not count",
+        "pass": true
+      }
+    ],
+    "browser": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/153.0.8010.48",
+      "revision": "@199a3a541d76237379e353b348e64045584db057",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+      "jsVersion": "15.3.76.12"
+    },
+    "extensionId": "ghpdkjfcbmnnejmmnlfcancjlgjmoacc",
+    "pass": true,
+    "sendRecords": 110,
+    "browserExit": {
+      "code": 0,
+      "signal": null
+    },
+    "runtimeErrors": []
+  },
+  "officialResourceAudit": {
+    "nonEnglishOfficialBundlesVerified": 20,
+    "originalStringsVerified": 280,
+    "remoteCodeExecuted": false,
+    "networkUsed": false
+  },
+  "sourceSHA256": {
+    "manifest.json": "5b928c8e92d256abb0a2a346858afd11b1d4f44122ff854b0b2c70a3b1742b52",
+    "package-lock.json": "79506567508564bea7663fb3dd160567b4e89d82331e6d2fca7785381bb56804",
+    "package.json": "4a6c5adb5634f12084e491a8ae779a2ccf2cd647b6cbaf75860e29fd701a28b5",
+    "src/background.js": "0d02ba2c1e7fdedf9ac073b0ff4e2404e3ca2b96d8663b0a07c506381511c70d",
+    "src/content.css": "8d47743d2d0a1247a82bc02540fca370e3a9a39f14721617a385ba9ae7f7a81f",
+    "src/content.js": "2b93ac86bf271fb37810a2f6773d1f1f818f3c9f5e6a1fc1395991cccf0a4f83",
+    "src/options.css": "9e1ef67c690e3f6d9540755026b79a2c94aee954410d98cbb71e12dbfd0d2470",
+    "src/options.html": "9ed17d6c8ccc90a79cc946c9238849ba951b6bfc4b49c5ca662b565dba720530",
+    "src/options.js": "cec33d2f92fe76feba8d5e2597308f3fce0d037e6d9be5a17179580b4250879f",
+    "src/popup.css": "7d102cd94317dbf39c38d8927dcfde300df637fcf94db7eb3c0daac0ab0fb310",
+    "src/popup.html": "f7156246f1a6c75f12b411cedf6a91f2240f54767ec6b722b8ae38fb44572ff7",
+    "src/popup.js": "a66d1f8b694694ae821fb7059f6ba6e83a5cbda9bf986719026a22416c458fd8",
+    "src/shared.js": "78afa81cb267ba89bffcaf53365f26cc0b929f4bd7c289d45030a3743cc647d0",
+    "src/site-detection.js": "93bf3fa62c41462606421349434ccef537b46eae0fda34dadd816553003f8075",
+    "src/site-locales.js": "64a060182cefaac3a19af8cea2c777a109f0514e559d5a8813c5302b655e9072",
+    "tests/counting.test.cjs": "9fba2dcf5f4cf0fe6fe080f008d459d8ee76ecf5ded07c448628f19be0ccda97",
+    "tests/helpers.cjs": "3d26a77db6a1e64f6b48f8986f944b95697b451295ca433444b5b12428bd4772",
+    "tests/reverification.test.cjs": "4eca08846db044254a5a1d393a126fec5f8f1c2237552747d43bf340b4eed337",
+    "tests/site-detection.test.cjs": "7feca65efec6866af39cee3c1976c625b415284a2c688fec49643e590143ac24",
+    "tools/check-extension.mjs": "102faa0005d7b8beef60305fb3f081e1f4b60c68feab11de802a9c29555d9e9b",
+    "tools/extract-official-labels.mjs": "123b5edf9717bc1860beffabf777fc4238723161fc8cf1d54b3a831766f19fa0",
+    "tools/inspect-official-assets.mjs": "3ae7528f0a444ebfcabc92fee6a0ebee2a8ba3b1545ec7f2aefa6ee79789ac07",
+    "tools/update-site-locales.mjs": "a96db3b1d1991e9ff28e94fc574ad311c86ec65ef9409300d3dc1eb99fe31ec4",
+    "tools/verify-chrome.mjs": "fde1f1ac229f9c4df04742e6e69ced8a6af8d8529816c1703c0200c61d3f9723",
+    "tools/verify-evidence.mjs": "50d5f0dda06ef5899d99d459ccce21a2c5e59162bdc4367f557d0ab4994fb4ce"
+  },
+  "testBrowserCleanup": {
+    "profileRemoved": true,
+    "noMatchingVerifierProcess": true
+  },
+  "browserStderrDiagnostics": {
+    "ui/display/mac/cv_display_link_mac.mm:195": 30,
+    "content/browser/network_service_instance_impl.cc:655": 1,
+    "chrome/browser/ui/webui/ntp/new_tab_ui.cc:54": 2,
+    "third_party/crashpad/crashpad/util/file/file_io_posix.cc:145": 6,
+    "google_apis/gcm/engine/registration_request.cc:291": 3
+  },
+  "rawLogsDirectory": "/tmp/cmt-final-verification",
+  "limitations": [
+    "Existing logged-in Chrome disallows JavaScript through Apple Events; its setting was not changed.",
+    "Official voice intelligence labels supply some exact fallback strings; text-composer presets can be server-overridden.",
+    "No live-account language switching or real ChatGPT prompt submission was performed.",
+    "User-profile extension was not reloaded and user usage records were not touched."
+  ]
+}

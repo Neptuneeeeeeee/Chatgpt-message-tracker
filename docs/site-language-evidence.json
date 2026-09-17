@@ -1,0 +1,445 @@
+{
+  "loaderURL": "https://chatgpt.com/cdn/assets/70025534-ljy4z66laldz1yhs.js",
+  "loaderSHA256": "d716ce5a2c0c72df5bb2b48e995cc729abae4ec9d80969d1971239694da2573c",
+  "messageKeys": {
+    "instant": [
+      "voiceFloatingOrbSettingsModal.intelligence.option.instant"
+    ],
+    "medium": [
+      "voiceFloatingOrbSettingsModal.intelligence.option.medium"
+    ],
+    "high": [
+      "voiceFloatingOrbSettingsModal.intelligence.option.high"
+    ],
+    "extra-high": [
+      "EDAyEb",
+      "0NW3sS"
+    ],
+    "pro": [
+      "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard",
+      "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended"
+    ]
+  },
+  "note": "instant/medium/high keys are official voice-settings intelligence labels; text composer presets may have server-provided overrides. These are conservative exact-label fallbacks, NOT proof every account renders these labels. No Light/Standard/Extended/Heavy equivalence is inferred.",
+  "locales": {
+    "en-US": {
+      "source": "defaultMessage descriptors in the official web bundles",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instant",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Medium",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "High",
+        "EDAyEb": "Extra High",
+        "0NW3sS": "Extra high thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Extended",
+        "xfIykB": "Send prompt",
+        "PromptTextarea.sendMessageTooltip": "Send message",
+        "FT0eIf": "Stop answering",
+        "PromptTextarea.stopGenerating": "Stop generating",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Select model",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Select effort",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Thinking effort"
+      }
+    },
+    "zh-CN": {
+      "url": "https://chatgpt.com/cdn/assets/04a8820c-o7ia5l8n9sn3cb5b.js",
+      "sha256": "e6b516ad98dd90a499f2db9f28f21bb4b822d566bb2c71b7a3176cad1aec2b84",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "即时",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "中",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "高",
+        "EDAyEb": "极高",
+        "0NW3sS": "极高 Thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro 深度模式",
+        "xfIykB": "发送提示词",
+        "PromptTextarea.sendMessageTooltip": "发送消息",
+        "FT0eIf": "停止回答",
+        "PromptTextarea.stopGenerating": "停止生成",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "选择模型",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "选择强度",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "思考强度"
+      }
+    },
+    "zh-TW": {
+      "url": "https://chatgpt.com/cdn/assets/e7453131-f4oy9jr1q8tbtb65.js",
+      "sha256": "a82eb635487245ef858fcd846f4d7d8a8082421318b63f34db2b7ca0b0e50383",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "即時",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "中",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "高",
+        "EDAyEb": "極高",
+        "0NW3sS": "極高 Thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro 深度模式",
+        "xfIykB": "傳送提示詞",
+        "PromptTextarea.sendMessageTooltip": "傳送訊息",
+        "FT0eIf": "停止回應",
+        "PromptTextarea.stopGenerating": "停止生成",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "選取模型",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "選擇推理強度",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "推理強度"
+      }
+    },
+    "zh-HK": {
+      "url": "https://chatgpt.com/cdn/assets/f4110c9d-dmx7aqp179iy4qif.js",
+      "sha256": "beab83c683ab55282fdd888e79207c67d6197d8c8da95bfae3b4505f7ba45baa",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "即時",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "中",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "高",
+        "EDAyEb": "極高",
+        "0NW3sS": "極高 Thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro 深度模式",
+        "xfIykB": "傳送提示",
+        "PromptTextarea.sendMessageTooltip": "發訊息",
+        "FT0eIf": "停止回應",
+        "PromptTextarea.stopGenerating": "停止生成",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "選擇模型",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "選擇推理強度",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "推理強度"
+      }
+    },
+    "es-ES": {
+      "url": "https://chatgpt.com/cdn/assets/79388dbf-fi391vfvqzh1yg86.js",
+      "sha256": "08922be45d89ced5830ae33eab96c96a97918d0bab57fbf1e5dc3e3615846a73",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instantánea",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Media",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Alta",
+        "EDAyEb": "Muy alta",
+        "0NW3sS": "Thinking muy alto",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Extended",
+        "xfIykB": "Enviar prompt",
+        "PromptTextarea.sendMessageTooltip": "Enviar mensaje",
+        "FT0eIf": "Detener respuesta",
+        "PromptTextarea.stopGenerating": "Detener la generación",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Seleccionar modelo",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Seleccionar esfuerzo",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Esfuerzo de razonamiento"
+      }
+    },
+    "es-419": {
+      "url": "https://chatgpt.com/cdn/assets/eb816479-dpj8y766xizdo2zf.js",
+      "sha256": "cce8f65f6e1e264d639ef3a2462e4fc5b6cb048cdb03ff2e2d6bbeb3a5c4dab8",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instantánea",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Media",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Alta",
+        "EDAyEb": "Muy alta",
+        "0NW3sS": "Muy alto Thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Extended",
+        "xfIykB": "Enviar mensaje",
+        "PromptTextarea.sendMessageTooltip": "Enviar mensaje",
+        "FT0eIf": "Detener respuesta",
+        "PromptTextarea.stopGenerating": "Detener generación",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Seleccionar modelo",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Seleccionar esfuerzo",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Esfuerzo de razonamiento"
+      }
+    },
+    "pt-BR": {
+      "url": "https://chatgpt.com/cdn/assets/c0680e6f-ojdde5iwa2e9isqi.js",
+      "sha256": "08ecbb0a2dd8252e73feb75dc832b02bea64a478f8de9fba488866051f12c1fd",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instantânea",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Média",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Alta",
+        "EDAyEb": "Extra alto",
+        "0NW3sS": "Raciocínio extra alto",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro estendido",
+        "xfIykB": "Enviar prompt",
+        "PromptTextarea.sendMessageTooltip": "Enviar mensagem",
+        "FT0eIf": "Parar de responder",
+        "PromptTextarea.stopGenerating": "Interromper geração",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Selecionar modelo",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Selecionar esforço",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Esforço de raciocínio"
+      }
+    },
+    "pt-PT": {
+      "url": "https://chatgpt.com/cdn/assets/90513922-j64l9dw8eskx192g.js",
+      "sha256": "549ad4b8520888378b2046718ff8d5548630e1db00a2a29f0a45292d75e7b497",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instantâneo",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Médio",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Elevado",
+        "EDAyEb": "Muito elevado",
+        "0NW3sS": "Thinking extra alto",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Alargado",
+        "xfIykB": "Enviar prompt",
+        "PromptTextarea.sendMessageTooltip": "Enviar mensagem",
+        "FT0eIf": "Parar resposta",
+        "PromptTextarea.stopGenerating": "Parar de gerar",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Selecionar modelo",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Selecionar esforço",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Esforço de raciocínio"
+      }
+    },
+    "fr-FR": {
+      "url": "https://chatgpt.com/cdn/assets/21eece21-c0t23om00caz5bqs.js",
+      "sha256": "945d83664cf151bcdfe84a546239ecf5b5f2a359081012fd45f316dbdfe62a74",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instantanée",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Moyenne",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Élevée",
+        "EDAyEb": "Très élevé",
+        "0NW3sS": "Réflexion très élevée",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Étendu",
+        "xfIykB": "Envoyer le prompt",
+        "PromptTextarea.sendMessageTooltip": "Envoyer un message",
+        "FT0eIf": "Interrompre la réponse",
+        "PromptTextarea.stopGenerating": "Arrêter la génération",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Sélectionner le modèle",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Sélectionner l’effort",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Effort de réflexion"
+      }
+    },
+    "fr-CA": {
+      "url": "https://chatgpt.com/cdn/assets/d32e8876-ove5y6qn6c4bfrnx.js",
+      "sha256": "c51143b39423c6c5a7c91096ae3fc6ba54e84fa0b08f955c443ef272bf7a09c8",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instantané",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Moyen",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Élevé",
+        "EDAyEb": "Très élevé",
+        "0NW3sS": "Thinking très élevé",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Étendu",
+        "xfIykB": "Envoyer la requête",
+        "PromptTextarea.sendMessageTooltip": "Envoyer le message",
+        "FT0eIf": "Arrêter de répondre",
+        "PromptTextarea.stopGenerating": "Arrêter la génération",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Sélectionner un modèle",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Sélectionner l’effort",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Effort de réflexion"
+      }
+    },
+    "de-DE": {
+      "url": "https://chatgpt.com/cdn/assets/b85d0ea8-ma9zeiw5wu1h9i6k.js",
+      "sha256": "3d68f7608c527d1538f7bd7e1e9baae7fb8fac6727899d8a604d4d96af870f4a",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Sofort",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Mittel",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Hoch",
+        "EDAyEb": "Sehr hoch",
+        "0NW3sS": "Sehr hoher Denkaufwand",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Erweitert",
+        "xfIykB": "Prompt senden",
+        "PromptTextarea.sendMessageTooltip": "Nachricht senden",
+        "FT0eIf": "Antwort stoppen",
+        "PromptTextarea.stopGenerating": "Generierung anhalten",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Modell auswählen",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Aufwand wählen",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Denkaufwand"
+      }
+    },
+    "ja-JP": {
+      "url": "https://chatgpt.com/cdn/assets/7aaae702-lzotv3gyf6ek343v.js",
+      "sha256": "d08f921a39721c235406d650e32447c266c129b0db185093be088ed3897ad1ac",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "即時",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "中程度",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "高い",
+        "EDAyEb": "非常に高い",
+        "0NW3sS": "非常に高い思考レベル",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro 拡張",
+        "xfIykB": "プロンプトを送信する",
+        "PromptTextarea.sendMessageTooltip": "メッセージを送信します",
+        "FT0eIf": "回答を停止",
+        "PromptTextarea.stopGenerating": "生成を中止する",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "モデルを選択",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "思考量を選択",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "思考量"
+      }
+    },
+    "ko-KR": {
+      "url": "https://chatgpt.com/cdn/assets/04f8add6-oayqv29h3o6s0735.js",
+      "sha256": "e8dff58f884b82401f6d4cab171112a238ff22d1e19529e55947c34095ee7ddc",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instant",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "중간",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "높음",
+        "EDAyEb": "매우 높음",
+        "0NW3sS": "매우 높은 Thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro 확장",
+        "xfIykB": "프롬프트 보내기",
+        "PromptTextarea.sendMessageTooltip": "메시지 보내기",
+        "FT0eIf": "답변 중지",
+        "PromptTextarea.stopGenerating": "생성 중단하기",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "모델 선택",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "추론 수준 선택",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "추론 수준"
+      }
+    },
+    "ar": {
+      "url": "https://chatgpt.com/cdn/assets/cc96b982-kwpq8n37byrqufqg.js",
+      "sha256": "31f1e36bc041bd617181ecbf31cafee9d67dc89cd51920b66229f267dce4fd2f",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "فوري",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "متوسط",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "عالٍ",
+        "EDAyEb": "عالٍ جدًا",
+        "0NW3sS": "مستوى تفكير عالٍ جدًا",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro الموسّع",
+        "xfIykB": "إرسال السؤال",
+        "PromptTextarea.sendMessageTooltip": "إرسال رسالة",
+        "FT0eIf": "إيقاف الرد",
+        "PromptTextarea.stopGenerating": "إيقاف الإجابة",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "اختر النموذج",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "اختر مستوى الجهد",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "مستوى جهد التفكير"
+      }
+    },
+    "hi-IN": {
+      "url": "https://chatgpt.com/cdn/assets/f77409d6-jgiotkiwy6m48bv8.js",
+      "sha256": "9a1da5e9c01c64d21e8ac392ab0f834610f5c20012db8204a99e63acb4b30293",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "इंस्टेंट",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "मध्यम",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "उच्च",
+        "EDAyEb": "एक्स्ट्रा हाई",
+        "0NW3sS": "बहुत गहन विश्लेषण",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro एक्सटेंडेड",
+        "xfIykB": "प्रॉम्प् भेजें",
+        "PromptTextarea.sendMessageTooltip": "मैसेज भेजें",
+        "FT0eIf": "उत्तर रोकें",
+        "PromptTextarea.stopGenerating": "जनरेट करना बंद करें",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "मॉडल चुनें",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "एफ़र्ट चुनें",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Thinking एफर्ट"
+      }
+    },
+    "ru-RU": {
+      "url": "https://chatgpt.com/cdn/assets/7b8a0b97-j2myb9fbeoj9467f.js",
+      "sha256": "d41e115f5e768331b45ea88b65fe2bfef182cc5e711afea6e5f9c17db586a359",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Быстрый",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Средний",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Высокий",
+        "EDAyEb": "Очень высокий",
+        "0NW3sS": "Очень высокий уровень Thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Усиленный",
+        "xfIykB": "Отправить промпт",
+        "PromptTextarea.sendMessageTooltip": "Отправить сообщение",
+        "FT0eIf": "Остановить ответ",
+        "PromptTextarea.stopGenerating": "Перестать формировать",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Выбрать модель",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Выберите усилие",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Усилие размышления"
+      }
+    },
+    "id-ID": {
+      "url": "https://chatgpt.com/cdn/assets/abb64f59-bv4oreqy81ytihgi.js",
+      "sha256": "423d5ebfb4af86f6538b82ae9550e48dd06860e9b9f8b0bc56360c67ec8b75be",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instant",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Sedang",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Tinggi",
+        "EDAyEb": "Ekstra Tinggi",
+        "0NW3sS": "Thinking Sangat Tinggi",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Extended",
+        "xfIykB": "Kirim perintah",
+        "PromptTextarea.sendMessageTooltip": "Kirim pesan",
+        "FT0eIf": "Hentikan jawaban",
+        "PromptTextarea.stopGenerating": "Berhenti membuat",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Pilih model",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Pilih upaya",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Upaya berpikir"
+      }
+    },
+    "it-IT": {
+      "url": "https://chatgpt.com/cdn/assets/80271b66-oxw1to0i3dtcxs2m.js",
+      "sha256": "f7fbcd6f48084dec871a3b770c7c82dc46a83226e40663927b212f001539eb7f",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Immediata",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Medio",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Alto",
+        "EDAyEb": "Molto alto",
+        "0NW3sS": "Thinking molto alto",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Esteso",
+        "xfIykB": "Invia prompt",
+        "PromptTextarea.sendMessageTooltip": "Invia messaggio",
+        "FT0eIf": "Interrompi risposta",
+        "PromptTextarea.stopGenerating": "Interrompi generazione",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Seleziona modello",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Seleziona sforzo",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Sforzo di Thinking"
+      }
+    },
+    "tr-TR": {
+      "url": "https://chatgpt.com/cdn/assets/39fd6f54-krmy24aag9s1vhej.js",
+      "sha256": "38b17d300e057ee8053612677ccd8082974619dfe1e01aa5254401b6be198983",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Hızlı",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Orta",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Yüksek",
+        "EDAyEb": "Çok Yüksek",
+        "0NW3sS": "Çok yüksek düşünme",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Kapsamlı Pro",
+        "xfIykB": "Prompt gönder",
+        "PromptTextarea.sendMessageTooltip": "Mesaj gönder",
+        "FT0eIf": "Yanıtlamayı durdur",
+        "PromptTextarea.stopGenerating": "Oluşturmayı durdur",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Model seç",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Akıl yürütme düzeyi seç",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Akıl yürütme düzeyi"
+      }
+    },
+    "vi-VN": {
+      "url": "https://chatgpt.com/cdn/assets/7fe23920-ncifrbhr59tlijip.js",
+      "sha256": "9b0481aa2986ce76ac2b918d922c6f813e950edcf7fa2a74c10ef3f09c184c58",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Tức thì",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Vừa",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "Cao",
+        "EDAyEb": "Chuyên sâu",
+        "0NW3sS": "Mức suy nghĩ rất cao",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Mở rộng",
+        "xfIykB": "Gửi câu lệnh",
+        "PromptTextarea.sendMessageTooltip": "Gửi tin nhắn",
+        "FT0eIf": "Dừng trả lời",
+        "PromptTextarea.stopGenerating": "Dừng tạo",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "Chọn mô hình",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "Chọn mức nỗ lực",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "Mức độ suy nghĩ"
+      }
+    },
+    "th-TH": {
+      "url": "https://chatgpt.com/cdn/assets/8d612f6d-bzxmxa4f43y2ntph.js",
+      "sha256": "7e91ea64c508324cb10922c3865d83878ec2a6055041d8ac413e3b5cd411908a",
+      "messages": {
+        "voiceFloatingOrbSettingsModal.intelligence.option.instant": "Instant",
+        "voiceFloatingOrbSettingsModal.intelligence.option.medium": "Medium",
+        "voiceFloatingOrbSettingsModal.intelligence.option.high": "High",
+        "EDAyEb": "Extra High",
+        "0NW3sS": "Extra High Thinking",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.standard": "Pro",
+        "chatgpt.composer.intelligence_picker.pro_effort.pill.label.extended": "Pro Extended",
+        "xfIykB": "ส่งคำสั่ง",
+        "PromptTextarea.sendMessageTooltip": "ส่งข้อความ",
+        "FT0eIf": "หยุดตอบ",
+        "PromptTextarea.stopGenerating": "เลิกสร้าง",
+        "chatgpt.composer.model_picker.trigger.open.placeholder": "เลือกโมเดล",
+        "chatgpt.composer.model_picker.trigger.open.placeholder.effort": "เลือกการใช้เหตุผล",
+        "chatgpt.composer.intelligence_picker.thinking_effort.tooltip": "ระดับการใช้เหตุผล"
+      }
+    }
+  }
+}
