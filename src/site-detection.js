@@ -2,7 +2,14 @@
   "use strict";
   // The lexicon is generated from original ChatGPT UI resources, not translated by this extension.
   const locales = root.ChatGPTTrackerSiteLocales;
-  const COMPOSER = '#prompt-textarea, [data-testid="prompt-textarea"]';
+  // The 2026-09 app shell dropped #prompt-textarea and every data-testid: the main composer is
+  // form[data-chatgpt-composer]. The inline "edit message" editor shares data-composer-markdown
+  // but sits in a plain form, so the form attribute is what tells them apart.
+  const COMPOSER = '#prompt-textarea, [data-testid="prompt-textarea"], form[data-chatgpt-composer] [data-composer-markdown]';
+  const SHELL_FORM = 'form[data-chatgpt-composer]';
+  // That shell also keeps every visited page mounted (display:none) beside the active one,
+  // so there are several composers, pickers and transcripts in the document at once.
+  const INACTIVE = '[data-app-shell-active-page="false"]';
   const SWITCHER = '[data-testid*="model-switcher"]';
   const PICKER = '[data-testid="composer-intelligence-picker-content"]';
   const EXCLUDED = '#cmt-widget, [data-message-author-role], [data-testid*="attachment"], [data-testid*="file-pill"]';
@@ -67,12 +74,26 @@
     function pageLocale() {
       return resolveLocale(document.documentElement.getAttribute("lang") || document.body?.getAttribute("lang") || "");
     }
+    function active(element) {
+      return Boolean(element) && !element.closest(INACTIVE);
+    }
+    function rendered(element) {
+      const rect = element.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    }
+    // Called on every mutation batch: the attribute check settles the usual case without layout.
+    function composer() {
+      const all = Array.from(document.querySelectorAll(COMPOSER));
+      if (all.length < 2) return all[0] || null;
+      const live = all.filter(active);
+      return live.length < 2 ? live[0] || null : live.find(rendered) || live[0];
+    }
     function composerRoot() {
-      const input = document.querySelector(COMPOSER);
+      const input = composer();
       return input?.closest("form") || input?.parentElement || null;
     }
     function visible(element) {
-      if (!element || element.closest(EXCLUDED) || element.closest('[hidden], [aria-hidden="true"]')) return false;
+      if (!element || element.closest(EXCLUDED) || element.closest('[hidden], [aria-hidden="true"], ' + INACTIVE)) return false;
       const rect = element.getBoundingClientRect();
       const style = view.getComputedStyle(element);
       return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
@@ -161,13 +182,14 @@
       // Stop must win even when the element retains the submit id/type or a stale send testid.
       if (testid === "stop-button" || rows.some(row => row.stop.some(label => labels.includes(normalize(label))))) return false;
       if (testid === "send-button") return true;
+      if (composer.matches(SHELL_FORM) && button.type === "submit") return true;
       return rows.some(row => row.send.some(label => labels.includes(normalize(label)))) || labels.includes("send") || labels.includes("submit");
     }
     function sendButtonReady() {
       const composer = composerRoot();
       return Boolean(composer && Array.from(composer.querySelectorAll("button")).some(isSendButton));
     }
-    return {detect, isSendButton, sendButtonReady, pageLocale};
+    return {detect, isSendButton, sendButtonReady, pageLocale, composer, active};
   }
   root.ChatGPTTrackerSiteDetection = {normalize, resolveLocale, matchText, createDetector};
 })(typeof window !== "undefined" ? window : globalThis);

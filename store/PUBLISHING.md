@@ -1,13 +1,13 @@
-# Chrome Web Store 发布清单（0.4.0）
+# Chrome Web Store 发布清单（0.4.1）
 
 准备上传不代表已提交、通过审核或已经上线。此目录的文案和隐私声明基于当前代码；开发者应在商店后台逐项确认后提交，不要把任何占位说明粘贴为真实身份或测试凭据。
 
 ## 交付文件
 
-运行 `python3 tools/build_release.py` 生成 `dist/0.4.0/`：
+运行 `python3 tools/build_release.py` 生成 `dist/0.4.1/`：
 
-- `chatgpt-message-tracker-0.4.0-chrome-web-store.zip`：唯一应该上传到商店 Package 页的扩展包。manifest.json 位于 ZIP 根目录，没有 Git、测试、node_modules、研究语言包、CLI 或本地记录。
-- `chatgpt-message-tracker-0.4.0-publish-kit.zip`：给发布者保存的材料包，含上传 ZIP、截图、宣传图、隐私政策、文案及本清单。不要把整个材料包上传为扩展。
+- `chatgpt-message-tracker-0.4.1-chrome-web-store.zip`：唯一应该上传到商店 Package 页的扩展包。manifest.json 位于 ZIP 根目录，没有 Git、测试、node_modules、研究语言包、CLI 或本地记录。
+- `chatgpt-message-tracker-0.4.1-publish-kit.zip`：给发布者保存的材料包，含上传 ZIP、截图、宣传图、隐私政策、文案及本清单。不要把整个材料包上传为扩展。
 - `SHA256SUMS.txt` 和 `package-audit.json`：校验值及文件清单。
 - `unpacked/`：与上传 ZIP 内容一致的解压目录，可用来本地试装。
 
@@ -19,7 +19,11 @@
 
 Google 要求 ZIP 根目录包含 manifest；简短说明最多 132 字符。截图使用 1280×800 或 640×400，至少一张；另准备 128×128 PNG 图标及 440×280 小宣传图。首次公开发布前，仍应在自己的已登录 ChatGPT 网页中实际切换中文和英文各发送一次，确认账户当前控件标签能被识别。
 
-0.4.0 首次默认全英文。在 Settings → Languages 中分别设置界面语言和 ChatGPT 模式选项显示语言，两项均有 21 个语言／地区变体且自动保存。界面译文与用于识别 ChatGPT 网页的官方词表是独立模块；显示设置不会改变网站／账户语言，不会强制网页识别语言。自定义名称、模式 ID 和历史记录保持不变。不要宣传官方剩余额度、限额预测、跨设备同步或所有账户均已实测。正式上传前按 `docs/USER_TEST_0.4.0.md` 手测，并将最新隐私政策、源码与文案同步到公开仓库；仅本地修改不会自动更新政策 URL。
+0.4.0 首次默认全英文。在 Settings → Languages 中分别设置界面语言和 ChatGPT 模式选项显示语言，两项均有 21 个语言／地区变体且自动保存。界面译文与用于识别 ChatGPT 网页的官方词表是独立模块；显示设置不会改变网站／账户语言，不会强制网页识别语言。自定义名称、模式 ID 和历史记录保持不变。不要宣传官方剩余额度、限额预测、跨设备同步或所有账户均已实测。正式上传前按 `docs/USER_TEST_0.4.1.md` 手测，并将最新隐私政策、源码与文案同步到公开仓库；仅本地修改不会自动更新政策 URL。
+
+## 更新已上架的条目（0.4.1）
+
+在条目的 Package 页点 “Upload new package” 上传 0.4.1 的 ZIP；商店没有单独的更新日志栏，更新介绍放在 Store listing 的详细说明里（`listing-en.md` 的 “What's new in 0.4.1” 一段）。权限、数据用途和隐私字段与 0.4.0 相同，无须改动。保存草稿后点 “Submit for review”，审核通过后用户自动收到更新。
 
 ## 隐私政策 URL 与支持 URL
 

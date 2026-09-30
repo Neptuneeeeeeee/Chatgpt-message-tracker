@@ -24,16 +24,19 @@
     },
     "send": [
       "Send prompt",
-      "Send message"
+      "Send message",
+      "Send"
     ],
     "stop": [
       "Stop answering",
-      "Stop generating"
+      "Stop generating",
+      "Stop"
     ],
     "picker": [
       "Select model",
       "Select effort",
-      "Thinking effort"
+      "Thinking effort",
+      "Select ChatGPT model"
     ]
   },
   "zh-CN": {
@@ -58,16 +61,19 @@
     },
     "send": [
       "发送提示词",
-      "发送消息"
+      "发送消息",
+      "发送"
     ],
     "stop": [
       "停止回答",
-      "停止生成"
+      "停止生成",
+      "停止"
     ],
     "picker": [
       "选择模型",
       "选择强度",
-      "思考强度"
+      "思考强度",
+      "选择 ChatGPT 模型"
     ]
   },
   "zh-TW": {
@@ -92,16 +98,19 @@
     },
     "send": [
       "傳送提示詞",
-      "傳送訊息"
+      "傳送訊息",
+      "傳送"
     ],
     "stop": [
       "停止回應",
-      "停止生成"
+      "停止生成",
+      "停止"
     ],
     "picker": [
       "選取模型",
       "選擇推理強度",
-      "推理強度"
+      "推理強度",
+      "選取 ChatGPT 模型"
     ]
   },
   "zh-HK": {
@@ -126,16 +135,19 @@
     },
     "send": [
       "傳送提示",
-      "發訊息"
+      "發訊息",
+      "傳送"
     ],
     "stop": [
       "停止回應",
-      "停止生成"
+      "停止生成",
+      "停止"
     ],
     "picker": [
       "選擇模型",
       "選擇推理強度",
-      "推理強度"
+      "推理強度",
+      "選擇 ChatGPT 模型"
     ]
   },
   "es-ES": {
@@ -160,32 +172,39 @@
     },
     "send": [
       "Enviar prompt",
-      "Enviar mensaje"
+      "Enviar mensaje",
+      "Enviar"
     ],
     "stop": [
       "Detener respuesta",
-      "Detener la generación"
+      "Detener la generación",
+      "Detener"
     ],
     "picker": [
       "Seleccionar modelo",
       "Seleccionar esfuerzo",
-      "Esfuerzo de razonamiento"
+      "Esfuerzo de razonamiento",
+      "Seleccionar modelo de ChatGPT"
     ]
   },
   "es-419": {
     "modes": {
       "instant": [
-        "Instantánea"
+        "Instantánea",
+        "Instantáneo"
       ],
       "medium": [
-        "Media"
+        "Media",
+        "Medio"
       ],
       "high": [
-        "Alta"
+        "Alta",
+        "Alto"
       ],
       "extra-high": [
         "Muy alta",
-        "Muy alto Thinking"
+        "Muy alto Thinking",
+        "Muy alto"
       ],
       "pro": [
         "Pro",
@@ -193,28 +212,34 @@
       ]
     },
     "send": [
-      "Enviar mensaje"
+      "Enviar mensaje",
+      "Enviar"
     ],
     "stop": [
       "Detener respuesta",
-      "Detener generación"
+      "Detener generación",
+      "Detener"
     ],
     "picker": [
       "Seleccionar modelo",
       "Seleccionar esfuerzo",
-      "Esfuerzo de razonamiento"
+      "Esfuerzo de razonamiento",
+      "Seleccionar modelo de ChatGPT"
     ]
   },
   "pt-BR": {
     "modes": {
       "instant": [
-        "Instantânea"
+        "Instantânea",
+        "Instantâneo"
       ],
       "medium": [
-        "Média"
+        "Média",
+        "Médio"
       ],
       "high": [
-        "Alta"
+        "Alta",
+        "Alto"
       ],
       "extra-high": [
         "Extra alto",
@@ -227,32 +252,39 @@
     },
     "send": [
       "Enviar prompt",
-      "Enviar mensagem"
+      "Enviar mensagem",
+      "Enviar"
     ],
     "stop": [
       "Parar de responder",
-      "Interromper geração"
+      "Interromper geração",
+      "Parar"
     ],
     "picker": [
       "Selecionar modelo",
       "Selecionar esforço",
-      "Esforço de raciocínio"
+      "Esforço de raciocínio",
+      "Selecionar modelo do ChatGPT"
     ]
   },
   "pt-PT": {
     "modes": {
       "instant": [
-        "Instantâneo"
+        "Instantâneo",
+        "Instantânea"
       ],
       "medium": [
-        "Médio"
+        "Médio",
+        "Média"
       ],
       "high": [
-        "Elevado"
+        "Elevado",
+        "Elevada"
       ],
       "extra-high": [
         "Muito elevado",
-        "Thinking extra alto"
+        "Thinking extra alto",
+        "Muito elevada"
       ],
       "pro": [
         "Pro",
@@ -261,28 +293,34 @@
     },
     "send": [
       "Enviar prompt",
-      "Enviar mensagem"
+      "Enviar mensagem",
+      "Enviar"
     ],
     "stop": [
       "Parar resposta",
-      "Parar de gerar"
+      "Parar de gerar",
+      "Parar"
     ],
     "picker": [
       "Selecionar modelo",
       "Selecionar esforço",
-      "Esforço de raciocínio"
+      "Esforço de raciocínio",
+      "Selecionar modelo do ChatGPT"
     ]
   },
   "fr-FR": {
     "modes": {
       "instant": [
-        "Instantanée"
+        "Instantanée",
+        "Instantané"
       ],
       "medium": [
-        "Moyenne"
+        "Moyenne",
+        "Moyen"
       ],
       "high": [
-        "Élevée"
+        "Élevée",
+        "Élevé"
       ],
       "extra-high": [
         "Très élevé",
@@ -295,28 +333,34 @@
     },
     "send": [
       "Envoyer le prompt",
-      "Envoyer un message"
+      "Envoyer un message",
+      "Envoyer"
     ],
     "stop": [
       "Interrompre la réponse",
-      "Arrêter la génération"
+      "Arrêter la génération",
+      "Arrêter"
     ],
     "picker": [
       "Sélectionner le modèle",
       "Sélectionner l’effort",
-      "Effort de réflexion"
+      "Effort de réflexion",
+      "Sélectionner le modèle ChatGPT"
     ]
   },
   "fr-CA": {
     "modes": {
       "instant": [
-        "Instantané"
+        "Instantané",
+        "Instantanée"
       ],
       "medium": [
-        "Moyen"
+        "Moyen",
+        "Moyenne"
       ],
       "high": [
-        "Élevé"
+        "Élevé",
+        "Élevée"
       ],
       "extra-high": [
         "Très élevé",
@@ -329,22 +373,26 @@
     },
     "send": [
       "Envoyer la requête",
-      "Envoyer le message"
+      "Envoyer le message",
+      "Envoyer"
     ],
     "stop": [
       "Arrêter de répondre",
-      "Arrêter la génération"
+      "Arrêter la génération",
+      "Arrêter"
     ],
     "picker": [
       "Sélectionner un modèle",
       "Sélectionner l’effort",
-      "Effort de réflexion"
+      "Effort de réflexion",
+      "Sélectionner le modèle ChatGPT"
     ]
   },
   "de-DE": {
     "modes": {
       "instant": [
-        "Sofort"
+        "Sofort",
+        "Instant"
       ],
       "medium": [
         "Mittel"
@@ -363,16 +411,19 @@
     },
     "send": [
       "Prompt senden",
-      "Nachricht senden"
+      "Nachricht senden",
+      "Senden"
     ],
     "stop": [
       "Antwort stoppen",
-      "Generierung anhalten"
+      "Generierung anhalten",
+      "Stoppen"
     ],
     "picker": [
       "Modell auswählen",
       "Aufwand wählen",
-      "Denkaufwand"
+      "Denkaufwand",
+      "ChatGPT-Modell auswählen"
     ]
   },
   "ja-JP": {
@@ -381,14 +432,17 @@
         "即時"
       ],
       "medium": [
-        "中程度"
+        "中程度",
+        "中"
       ],
       "high": [
-        "高い"
+        "高い",
+        "高"
       ],
       "extra-high": [
         "非常に高い",
-        "非常に高い思考レベル"
+        "非常に高い思考レベル",
+        "極高"
       ],
       "pro": [
         "Pro",
@@ -397,16 +451,19 @@
     },
     "send": [
       "プロンプトを送信する",
-      "メッセージを送信します"
+      "メッセージを送信します",
+      "送信"
     ],
     "stop": [
       "回答を停止",
-      "生成を中止する"
+      "生成を中止する",
+      "停止"
     ],
     "picker": [
       "モデルを選択",
       "思考量を選択",
-      "思考量"
+      "思考量",
+      "ChatGPT モデルを選択"
     ]
   },
   "ko-KR": {
@@ -415,14 +472,17 @@
         "Instant"
       ],
       "medium": [
-        "중간"
+        "중간",
+        "Medium"
       ],
       "high": [
-        "높음"
+        "높음",
+        "High"
       ],
       "extra-high": [
         "매우 높음",
-        "매우 높은 Thinking"
+        "매우 높은 Thinking",
+        "Extra High"
       ],
       "pro": [
         "Pro",
@@ -431,16 +491,19 @@
     },
     "send": [
       "프롬프트 보내기",
-      "메시지 보내기"
+      "메시지 보내기",
+      "보내기"
     ],
     "stop": [
       "답변 중지",
-      "생성 중단하기"
+      "생성 중단하기",
+      "중지"
     ],
     "picker": [
       "모델 선택",
       "추론 수준 선택",
-      "추론 수준"
+      "추론 수준",
+      "ChatGPT 모델 선택"
     ]
   },
   "ar": {
@@ -465,16 +528,19 @@
     },
     "send": [
       "إرسال السؤال",
-      "إرسال رسالة"
+      "إرسال رسالة",
+      "إرسال"
     ],
     "stop": [
       "إيقاف الرد",
-      "إيقاف الإجابة"
+      "إيقاف الإجابة",
+      "إيقاف"
     ],
     "picker": [
       "اختر النموذج",
       "اختر مستوى الجهد",
-      "مستوى جهد التفكير"
+      "مستوى جهد التفكير",
+      "اختيار نموذج ChatGPT"
     ]
   },
   "hi-IN": {
@@ -483,10 +549,12 @@
         "इंस्टेंट"
       ],
       "medium": [
-        "मध्यम"
+        "मध्यम",
+        "मीडियम"
       ],
       "high": [
-        "उच्च"
+        "उच्च",
+        "हाई"
       ],
       "extra-high": [
         "एक्स्ट्रा हाई",
@@ -499,16 +567,19 @@
     },
     "send": [
       "प्रॉम्प् भेजें",
-      "मैसेज भेजें"
+      "मैसेज भेजें",
+      "भेजें"
     ],
     "stop": [
       "उत्तर रोकें",
-      "जनरेट करना बंद करें"
+      "जनरेट करना बंद करें",
+      "रोकें"
     ],
     "picker": [
       "मॉडल चुनें",
       "एफ़र्ट चुनें",
-      "Thinking एफर्ट"
+      "Thinking एफर्ट",
+      "ChatGPT मॉडल चुनें"
     ]
   },
   "ru-RU": {
@@ -533,22 +604,27 @@
     },
     "send": [
       "Отправить промпт",
-      "Отправить сообщение"
+      "Отправить сообщение",
+      "Отправить"
     ],
     "stop": [
       "Остановить ответ",
-      "Перестать формировать"
+      "Перестать формировать",
+      "Остановить"
     ],
     "picker": [
       "Выбрать модель",
       "Выберите усилие",
-      "Усилие размышления"
+      "Усилие размышления",
+      "Выбрать модель ChatGPT",
+      "Уровень усилий рассуждения"
     ]
   },
   "id-ID": {
     "modes": {
       "instant": [
-        "Instant"
+        "Instant",
+        "Rendah"
       ],
       "medium": [
         "Sedang"
@@ -558,7 +634,8 @@
       ],
       "extra-high": [
         "Ekstra Tinggi",
-        "Thinking Sangat Tinggi"
+        "Thinking Sangat Tinggi",
+        "Sangat Tinggi"
       ],
       "pro": [
         "Pro",
@@ -567,25 +644,30 @@
     },
     "send": [
       "Kirim perintah",
-      "Kirim pesan"
+      "Kirim pesan",
+      "Kirim"
     ],
     "stop": [
       "Hentikan jawaban",
-      "Berhenti membuat"
+      "Berhenti membuat",
+      "Hentikan"
     ],
     "picker": [
       "Pilih model",
       "Pilih upaya",
-      "Upaya berpikir"
+      "Upaya berpikir",
+      "Pilih model ChatGPT"
     ]
   },
   "it-IT": {
     "modes": {
       "instant": [
-        "Immediata"
+        "Immediata",
+        "Immediato"
       ],
       "medium": [
-        "Medio"
+        "Medio",
+        "Medium"
       ],
       "high": [
         "Alto"
@@ -601,16 +683,20 @@
     },
     "send": [
       "Invia prompt",
-      "Invia messaggio"
+      "Invia messaggio",
+      "Invia"
     ],
     "stop": [
       "Interrompi risposta",
-      "Interrompi generazione"
+      "Interrompi generazione",
+      "Interrompi"
     ],
     "picker": [
       "Seleziona modello",
       "Seleziona sforzo",
-      "Sforzo di Thinking"
+      "Sforzo di Thinking",
+      "Seleziona il modello ChatGPT",
+      "Sforzo di ragionamento"
     ]
   },
   "tr-TR": {
@@ -626,7 +712,8 @@
       ],
       "extra-high": [
         "Çok Yüksek",
-        "Çok yüksek düşünme"
+        "Çok yüksek düşünme",
+        "Çok yüksek"
       ],
       "pro": [
         "Pro",
@@ -635,22 +722,26 @@
     },
     "send": [
       "Prompt gönder",
-      "Mesaj gönder"
+      "Mesaj gönder",
+      "Gönder"
     ],
     "stop": [
       "Yanıtlamayı durdur",
-      "Oluşturmayı durdur"
+      "Oluşturmayı durdur",
+      "Durdur"
     ],
     "picker": [
       "Model seç",
       "Akıl yürütme düzeyi seç",
-      "Akıl yürütme düzeyi"
+      "Akıl yürütme düzeyi",
+      "ChatGPT modelini seç"
     ]
   },
   "vi-VN": {
     "modes": {
       "instant": [
-        "Tức thì"
+        "Tức thì",
+        "Nhanh"
       ],
       "medium": [
         "Vừa"
@@ -660,7 +751,8 @@
       ],
       "extra-high": [
         "Chuyên sâu",
-        "Mức suy nghĩ rất cao"
+        "Mức suy nghĩ rất cao",
+        "Cực cao"
       ],
       "pro": [
         "Pro",
@@ -669,16 +761,20 @@
     },
     "send": [
       "Gửi câu lệnh",
-      "Gửi tin nhắn"
+      "Gửi tin nhắn",
+      "Gửi"
     ],
     "stop": [
       "Dừng trả lời",
-      "Dừng tạo"
+      "Dừng tạo",
+      "Ngừng"
     ],
     "picker": [
       "Chọn mô hình",
       "Chọn mức nỗ lực",
-      "Mức độ suy nghĩ"
+      "Mức độ suy nghĩ",
+      "Chọn mô hình ChatGPT",
+      "Mức nỗ lực suy luận"
     ]
   },
   "th-TH": {
@@ -703,16 +799,19 @@
     },
     "send": [
       "ส่งคำสั่ง",
-      "ส่งข้อความ"
+      "ส่งข้อความ",
+      "ส่ง"
     ],
     "stop": [
       "หยุดตอบ",
-      "เลิกสร้าง"
+      "เลิกสร้าง",
+      "หยุด"
     ],
     "picker": [
       "เลือกโมเดล",
       "เลือกการใช้เหตุผล",
-      "ระดับการใช้เหตุผล"
+      "ระดับการใช้เหตุผล",
+      "เลือกโมเดล ChatGPT"
     ]
   }
 };

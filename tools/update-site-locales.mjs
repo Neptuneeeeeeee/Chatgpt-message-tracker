@@ -1,5 +1,6 @@
 // Rebuild the small bundled lexicon from ChatGPT's OWN published locale resources.
 // Developer-only. The extension itself never fetches a locale, executes remote code, or uploads data.
+// Rewrites both outputs from these bundles alone: run update-app-shell-locales.mjs afterwards to add the app-shell labels back.
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';

@@ -19,8 +19,15 @@ for(const [lang,row] of Object.entries(locales)) {
   test(`${lang}: bundled aliases are traceable to extracted original source keys`,()=>{
     const original=evidence.locales[lang];assert.ok(original);
     if(lang!=='en-US'){assert.match(original.url,/^https:\/\/chatgpt\.com\/cdn\/assets\/[a-z0-9-]+\.js$/);assert.match(original.sha256,/^[a-f0-9]{64}$/);}
+    // The 2026-09 app shell publishes its locales as JSON; its entries follow the earlier ones.
+    const shell=original.appShell;assert.ok(shell);
+    if(lang!=='en-US'){assert.equal(shell.url,`https://chatgpt.com/cdn/assets/${lang}.${shell.url.split('.').at(-2)}.json`);assert.match(shell.sha256,/^[a-f0-9]{64}$/);}
+    const messages={...original.messages,...shell.messages};
     for(const [mode,aliases] of Object.entries(row.modes)){
-      assert.deepEqual(aliases,[...new Set(evidence.messageKeys[mode].map(key=>original.messages[key]).filter(Boolean))]);
+      assert.deepEqual(aliases,[...new Set([...evidence.messageKeys[mode],...evidence.appShell.messageKeys[mode]].map(key=>messages[key]).filter(Boolean))]);
+    }
+    for(const [list,keys] of [['send',evidence.appShell.sendKeys],['stop',evidence.appShell.stopKeys],['picker',evidence.appShell.pickerKeys]]){
+      for(const key of keys)assert.ok(row[list].includes(shell.messages[key]),key);
     }
   });
 }

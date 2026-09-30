@@ -8,8 +8,15 @@
   let lastDetection = { mode: null, locale: null, source: "unrecognized" };
   const WIDGET_ID = "cmt-widget";
   const TAKEOVER_EVENT = "cmt-tracker:takeover";
-  const COMPOSER_SELECTOR = '#prompt-textarea, [data-testid="prompt-textarea"]';
-  const USER_MESSAGE_SELECTOR = '[data-message-author-role="user"]';
+  // 2026-09 新界面里用户消息不再带 data-message-author-role，改成 data-user-message-bubble
+  const USER_MESSAGE_SELECTOR = '[data-message-author-role="user"], [data-user-message-bubble]';
+  // 新界面的消息气泡自己没有 id，id 挂在外层（消息单元 / 整轮对话）上
+  const MESSAGE_ID_HOSTS = [["[data-chatgpt-search-message-ids]", "data-chatgpt-search-message-ids"], ["[data-turn-key]", "data-turn-key"]];
+  // 刚发出的消息先以占位 key "pending-chatgpt-submit" 出现，约 0.2 秒后换成真正的 id 重新挂载。
+  // 占位 key 每次发送都一样，不能当 id 记，否则第二次发送起会被当成“已经见过”
+  const MESSAGE_ID_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+  // 新界面把打开过的会话页都留在文档里（隐藏），“最后一条”要在消息所在的那一页里比
+  const PAGE_SELECTOR = "[data-app-shell-active-page]";
   const DETECT_DEBOUNCE_MS = 1500;
   // 发送意图（回车 / 点发送）之后，多久之内出现的新用户消息算作这次发送
   const INTENT_WINDOW_MS = 10000;
@@ -117,7 +124,7 @@
   }
 
   function getComposerElement() {
-    return document.querySelector(COMPOSER_SELECTOR);
+    return Site.composer();
   }
 
   function getComposer(target) {
@@ -199,20 +206,39 @@
     );
   }
 
+  function messageId(element) {
+    const own = element.getAttribute("data-message-id");
+    if (own) return own;
+    for (const [selector, attribute] of MESSAGE_ID_HOSTS) {
+      const id = MESSAGE_ID_PATTERN.exec(element.closest(selector)?.getAttribute(attribute) || "");
+      if (id) return id[0];
+    }
+    return "";
+  }
+
   function rememberUserMessage(element) {
     knownUserMessages.add(element);
-    const id = element.getAttribute("data-message-id");
+    const id = messageId(element);
     if (id) knownUserMessageIds.add(id);
   }
 
   function isKnownUserMessage(element) {
     if (knownUserMessages.has(element)) return true;
-    const id = element.getAttribute("data-message-id");
+    const id = messageId(element);
     return Boolean(id && knownUserMessageIds.has(id));
   }
 
+  // 两种写法嵌套出现时只认最外层，免得一条消息被当成两条
+  function isOutermostUserMessage(element) {
+    return !element.parentElement?.closest(USER_MESSAGE_SELECTOR);
+  }
+
+  function userMessagesIn(root) {
+    return Array.from(root.querySelectorAll(USER_MESSAGE_SELECTOR)).filter(isOutermostUserMessage);
+  }
+
   function snapshotUserMessages() {
-    document.querySelectorAll(USER_MESSAGE_SELECTOR).forEach(rememberUserMessage);
+    userMessagesIn(document).forEach(rememberUserMessage);
   }
 
   function collectUserMessages(nodes) {
@@ -222,11 +248,11 @@
       if (node.matches(USER_MESSAGE_SELECTOR)) found.push(node);
       node.querySelectorAll(USER_MESSAGE_SELECTOR).forEach((element) => found.push(element));
     }
-    return found;
+    return found.filter(isOutermostUserMessage);
   }
 
   function isLastUserMessage(element) {
-    const all = document.querySelectorAll(USER_MESSAGE_SELECTOR);
+    const all = userMessagesIn(element.closest(PAGE_SELECTOR) || document);
     return all.length > 0 && all[all.length - 1] === element;
   }
 
@@ -241,6 +267,8 @@
     if (!extensionAvailable) return;
     const fresh = [];
     for (const element of new Set(candidates)) {
+      // 占位节点和换 id 后的新节点可能落在同一批变更里，已被替换掉的那个不算“又冒出一条”
+      if (!element.isConnected) continue;
       if (isKnownUserMessage(element) && !unconfirmedUserMessages.has(element)) continue;
       unconfirmedUserMessages.delete(element);
       rememberUserMessage(element);
@@ -253,7 +281,8 @@
 
     const element = fresh[0];
     // 刚发送的消息一定排在会话最后；往上滚动补渲染出来的旧消息不算
-    if (!element.isConnected || !isLastUserMessage(element)) return;
+    // 留在文档里的其他会话页（隐藏）不是用户正在发送的地方
+    if (!Site.active(element) || !isLastUserMessage(element)) return;
 
     const now = Date.now();
     const text = normalizeText(element.textContent);
@@ -276,7 +305,7 @@
     }
     // Stable IDs already deduplicate remounts. Two intentional identical-text sends with
     // distinct IDs (e.g. 继续 twice) must both count; text-only dedupe is the last resort.
-    if (!element.getAttribute("data-message-id") && text && text === lastCounted.text && now - lastCounted.at < DEDUPE_MS) return;
+    if (!messageId(element) && text && text === lastCounted.text && now - lastCounted.at < DEDUPE_MS) return;
 
     commitSend(intent ? intent.mode : null, intent ? intent.source : "dom-observed", text);
   }
@@ -294,7 +323,7 @@
     if (!intent) return;
 
     // 补扫：MutationObserver 万一漏掉（比如整块子树被替换），这里还能捞到
-    handleNewUserMessages(Array.from(document.querySelectorAll(USER_MESSAGE_SELECTOR)));
+    handleNewUserMessages(userMessagesIn(document));
     if (pendingIntent !== intent) return; // 补扫时已经确认并计数
 
     // Clearing/unmounting the input is not proof of sending. Keep the original mode
@@ -554,7 +583,7 @@
     // 观察 documentElement 而不是 body：后台补注入可能发生在 body 还没建好的时候
     observer.observe(document.documentElement, {
       childList: true, subtree: true, characterData: true, attributes: true,
-      attributeFilter: ["lang", "aria-label", "aria-checked", "aria-selected", "aria-expanded", "aria-controls", "data-state", "data-testid"]
+      attributeFilter: ["lang", "aria-label", "aria-checked", "aria-selected", "aria-expanded", "aria-controls", "data-state", "data-testid", "data-app-shell-active-page"]
     });
 
     document.addEventListener(

@@ -14,6 +14,12 @@ Keep track of the messages you send on the ChatGPT website, grouped by the mode 
 
 ChatGPT Message Tracker provides a floating counter and a toolbar popup, separate counts for Instant, Medium, High, Extra High and Pro, manual corrections and undo, recent time-window and daily statistics, and a JSON export of settings and usage metadata.
 
+What's new in 0.4.1:
+- Counting works again on ChatGPT's redesigned web interface (September 2026). After that redesign, sent messages were no longer being counted.
+- The selected mode is read from the new thinking-effort control, and stays correct when you switch between conversations.
+- Mode names were refreshed from ChatGPT's current language resources, fixing unrecognized labels in French, Japanese, Portuguese (Portugal), Hindi and Italian.
+- The previous ChatGPT interface is still supported. Your existing counts, history and settings are kept.
+
 Mode detection uses the language declared by the ChatGPT page and labels taken from original ChatGPT frontend resources. The bundled vocabulary covers 21 language/region variants: English; Simplified Chinese, Traditional Chinese for Taiwan and Hong Kong; Spanish for Spain and Latin America; Portuguese for Brazil and Portugal; French for France and Canada; German, Japanese, Korean, Arabic, Hindi, Russian, Indonesian, Italian, Turkish, Vietnamese and Thai.
 
 English by default, with two independent language preferences under Settings → Languages: Interface language controls the popup, floating counter, settings, prompts and date/number formatting; ChatGPT mode-label language controls the mode names displayed within the extension. Both offer the 21 language/region choices above. Changes save automatically, custom names and existing history are preserved, and Arabic interfaces use right-to-left layout. These preferences do not change your ChatGPT account language or force the detector to use a different page language.
